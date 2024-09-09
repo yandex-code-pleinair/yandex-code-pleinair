@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    iframe {
+      width: 450px;
+      height: 800px;
+      border: none;
+    }
+
+    .killed {
+      background-color: red;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <iframe src="http://sub1.localhost:4000/plants/plant1.html" id="iframe1"></iframe>
+  <iframe src="http://sub2.localhost:4000/plants/plant2.html" id="iframe2"></iframe>
+  <iframe src="http://sub3.localhost:4000/plants/plant3.html" id="iframe3"></iframe>
+
+  <script>
+    const intervals = {},
+      pingTimes = {}
+
+    for (const iframe of document.querySelectorAll('iframe')) {
+      const iframeId = iframe.id
+      pingTimes[iframeId] = Date.now()
+
+      window.addEventListener('message', ({data, source}) => {
+        if (data === 'ping' && source === iframe.contentWindow) {
+          pingTimes[iframeId] = Date.now()
+          console.log(`Ping received from iframe: ${iframe.src}`)
+        }
+      })
+
+      intervals[iframeId] = setInterval(() => {
+        if (Date.now() - pingTimes[iframeId] > 5000) {
+          console.warn(`Killing iframe due to unresponsiveness: ${iframe.src}`)
+          const killedMessage = document.createElement('div')
+          killedMessage.classList.add('killed')
+          killedMessage.textContent = 'Iframe killed due to poor performance'
+          iframe.replaceWith(killedMessage)
+          clearInterval(intervals[iframeId])
+        }
+      }, 2000)
+    }
+  </script>
+</body>
+
+</html>
