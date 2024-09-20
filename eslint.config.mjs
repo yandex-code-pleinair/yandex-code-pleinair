@@ -3,6 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
 import { FlatCompat } from '@eslint/eslintrc'
+import html from 'eslint-plugin-html'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -12,7 +13,7 @@ const compat = new FlatCompat({
   allConfig: js.configs.all
 })
 
-export default[...compat.extends('eslint:recommended'), {
+export default [...compat.extends('eslint:recommended'), {
   languageOptions: {
     globals: {
       ...Object.fromEntries(Object.entries(globals.browser).map(([key]) => [key, 'off'])),
@@ -23,6 +24,10 @@ export default[...compat.extends('eslint:recommended'), {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+
+  plugins: { html },
+
+  files: ['**/*.js', '**/*.html'],
 
   rules: {
     indent: ['error', 2, { SwitchCase: 1, }],
@@ -70,6 +75,8 @@ export default[...compat.extends('eslint:recommended'), {
         var: { after: true, },
 
         do: { after: true, },
+
+        default: { after: true, },
       },
     }],
 
