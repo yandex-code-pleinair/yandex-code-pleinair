@@ -1,7 +1,7 @@
 ## Вспомнить (или быстро выучить) джаваскрипт
-- [https://learnxinyminutes.com/docs/ru-ru/javascript-ru](Learn X in Y minutes)
-- [https://doka.guide/js/](Doka)
-- [https://devdocs.io/javascript](DevDocs)
+- [Learn X in Y minutes](https://learnxinyminutes.com/docs/ru-ru/javascript-ru)
+- [Doka](https://doka.guide/js/)
+- [DevDocs](https://devdocs.io/javascript)
 
 ## Ограничения
 - Размер канваса 450×800
@@ -10,16 +10,16 @@
 - Не использовать готовые картинки, только код
 
 ## p5.js
-- [https://editor.p5js.org/illus0r/sketches/xYPs1T6v8](Редактор)
-- [https://p5js.org/reference/](Документация)
+- [Редактор](https://editor.p5js.org/illus0r/sketches/xYPs1T6v8)
+- [Документация](https://p5js.org/reference/)
 
 ## Скетчи-заготовки
-- [https://editor.p5js.org/illus0r/sketches/xYPs1T6v8](Начальный скетч)
+- [Начальный скетч](https://editor.p5js.org/illus0r/sketches/xYPs1T6v8)
 - Интро
-  - [https://editor.p5js.org/illus0r/sketches/QrRydeTCo](Берёзка)
+  - [Берёзка](https://editor.p5js.org/illus0r/sketches/QrRydeTCo)
 - Частицы
-  - [https://editor.p5js.org/illus0r/sketches/vR3rwoh16](Акварельный куст)
-  - [https://editor.p5js.org/illus0r/sketches/V-23MEDQl](Дерево)
-- [https://editor.p5js.org/illus0r/sketches/HIbtKrXpR](Трансформации)
-- [https://editor.p5js.org/illus0r/sketches/BuH3lHnjP](Рекурсия)
-- [https://editor.p5js.org/illus0r/sketches/T9CWqCJb7](Клеточные автоматы)
+  - [Акварельный куст](https://editor.p5js.org/illus0r/sketches/vR3rwoh16)
+  - [Дерево](https://editor.p5js.org/illus0r/sketches/V-23MEDQl)
+- [Трансформации](https://editor.p5js.org/illus0r/sketches/HIbtKrXpR)
+- [Рекурсия](https://editor.p5js.org/illus0r/sketches/BuH3lHnjP)
+- [Клеточные автоматы](https://editor.p5js.org/illus0r/sketches/T9CWqCJb7)
