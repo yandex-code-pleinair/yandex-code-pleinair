@@ -1,17 +1,73 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
+ function setup() {
+   createCanvas(450, 800)
+   noLoop()
+ }
 
-  function draw() {
-    background("white");
+ function draw() {
+   background(255)
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+   drawStem(width / 2, height, 10, height / 2) // Основной стебель
+   drawThistleBall(width / 2, height / 2, 100) // Колючая основа
+   drawFlower(width / 2, height / 2 - 60, 60) // Цветок
+ }
 
-    circle(width / 2, height / 2, 200);
-  }
+ function drawStem(x, y, width, height) {
+   stroke(34, 139, 34) // Темно-зеленый цвет для стебля
+   strokeWeight(width) // Ширина стебля
+   line(x, y, x, y - height) // Основная линия стебля
+
+   // Добавляем шипы на стебель
+   for(let i = y - height; i < y; i += 20) {
+     let spikeLength = random(10, 20)
+     line(x, i, x - spikeLength, i + 10) // Левый шип
+     line(x, i, x + spikeLength, i + 10) // Правый шип
+   }
+ }
+
+ function drawThistleBall(x, y, size) {
+   fill(100, 200, 100) // Зелено-серый цвет для основы
+   stroke(0)
+   strokeWeight(1)
+   ellipse(x, y, size, size) // Основная форма шара
+
+   // Добавляем больше шипов для плотности
+   let spikeDensity = 100 // Увеличиваем количество шипов
+   for(let i = 0; i < spikeDensity; i++) {
+     let angle = random(TWO_PI) // Случайный угол для каждого шипа
+     let distance = random(size / 2) // Расстояние от центра шара
+     let spikeX = x + cos(angle) * distance // Координаты точки на окружности
+     let spikeY = y + sin(angle) * distance
+     let spikeLength = random(10, 20) // Разная длина шипов для реалистичности
+     let spikeAngle = atan2(spikeY - y, spikeX - x) // Угол для направления шипа
+
+     // Рисуем шипы, исходящие от центра шара
+     line(spikeX, spikeY, spikeX + cos(spikeAngle) * spikeLength, spikeY + sin(spikeAngle) * spikeLength)
+   }
+ }
+
+ function drawFlower(x, y, radius) {
+   fill(255, 0, 127)
+   noStroke()
+   
+   for(let i = 0; i < 100; i++) { 
+     let angle = random(TWO_PI) 
+     let petalLength = random(40, 60) 
+     let petalWidth = random(5, 10) 
+     
+     let petalX = x + cos(angle) * random(10, 20) 
+     let petalY = y + sin(angle) * random(10, 20)
+     
+     push()
+     translate(petalX, petalY)
+     rotate(angle)
+     ellipse(0, 0, petalWidth, petalLength) 
+     pop()
+   }
+   
+   fill(200, 0, 100) 
+   ellipse(x, y, radius / 3) 
+ }
 </script>
