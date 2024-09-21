@@ -6,41 +6,67 @@ function setup() {
   background(255);
   stroke(0);
   angleMode(DEGREES);
-  drawBranch(200, 200, -90, 50);
-  drawBranch(200, 200, -45, 50);
-  drawBranch(200, 200, -125, 50);
-  
-  drawTree(200, 300, 100);
+  drawBranch(220, 500, -90, 90);
+  drawBranch(220, 500, -35, 50);
+  drawBranch(220, 500, -145, 50); 
+  drawBranch(220, 500, 25, 20);
+  drawBranch(220, 500, -200, 20); 
+  drawTree(220, 650, 150);
+  //drawBranch(200, 500, -180, 100); // Start from the bottom center
 }
 
 function drawBranch(x, y, angle, length) {
-  if (length > 5) {
+  if (length > 7) {
+    // Calculate the new branch's endpoint
     let xEnd = x + cos(angle) * length;
     let yEnd = y + sin(angle) * length;
+
+    // Draw the branch
     line(x, y, xEnd, yEnd);
-    drawBranch(xEnd, yEnd, angle - 65, length * 0.7); // Left branch
-    drawBranch(xEnd, yEnd, angle + 65, length * 0.7); // Right branch
+
+    // Recursively draw the next branches
+    drawBranch(xEnd, yEnd, angle, length * 0.75); // Left branch
+    drawBranch(xEnd, yEnd, angle + 45, length * 0.75); // Right branch
   } else {
+    // Draw leaves at the end of the branches
     fill(14, 139, 34); // Green color
-    drawDiamond(x, y, 4)
+    //Stroke();
+    //circle(x, y, 4); // Draw a leaf
+    drawLeaves(x, y, 3)
   }
 }
 
 function drawTree(x, y, size) {
+  // Draw tr›ee layers
   fill(14, 139, 34); // Green color
   triangle(x, y - size, x - size / 4, y, x + size / 4, y);
+
 }
 
-function drawDiamond(x, y, size) {
+function drawLeaves(x, y, size) {
+  
   let c = color(random(255), random(255), random(255));
   fill(c);
+  
+  //fill(14, 139, 34);
+
   beginShape();
   vertex(x, y - size); // Top vertex
   vertex(x + size, y); // Right vertex
   vertex(x, y + size); // Bottom vertex
   vertex(x - size, y); // Left vertex
   endShape(CLOSE);
+  
+    
+  // Draw the circle
+
+  
+  //circle(x, y, 7);
+  
+
 }
+
+
 </script>
 
 

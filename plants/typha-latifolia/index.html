@@ -2,16 +2,72 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+  createCanvas(450, 800);
+  background(240, 248, 255); // Light sky color
+  
+  // Draw the sakura tree, starting at the center bottom
+  drawTree(width / 2, height, -PI / 2, 160, 14);
+}
+
+function drawTree(x, y, angle, length, depth) {
+  if (depth === 0) return;
+
+  // Calculate the end point of each branch
+  const xEnd = x + cos(angle) * length;
+  const yEnd = y + sin(angle) * length;
+
+  // Adjust branch color and thickness
+  const branchColor = color(120, 85, 75, yEnd/2);
+  stroke(branchColor);
+  // strokeWeight(map(depth, 0, 14, 0.5, 7)); // Thicker at the bottom, very thin at the top
+  strokeWeight(yEnd/800*10);
+  line(x, y, xEnd, yEnd);
+
+  // Add texture to the trunk if it's a thicker branch
+  if (depth > 10) {
+    drawBark(xEnd, yEnd, depth);
   }
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  // Add blossoms at the end of the smallest branches
+  if (depth < 4) {
+    drawBlossom(xEnd, yEnd);
   }
+
+  // Recursively draw branches with more randomness for a natural feel
+  drawTree(xEnd, yEnd, angle - radians(random(15, 20)), length * random(0.6, 0.8), depth - 1);
+  drawTree(xEnd, yEnd, angle + radians(random(15, 20)), length * random(0.6, 0.8), depth - 1);
+}
+
+function drawBark(x, y, depth) {
+  noStroke();
+  fill(255, 182, 193, 100); // Bark texture color with transparency
+  for (let i = 0; i < 10; i++) {
+    ellipse(x + random(-depth, depth), y + random(-depth, depth), depth / 2, depth / 4);
+  }
+  fill(255, 105, 180, 120); // Bark texture color with transparency
+  for (let i = 0; i < 10; i++) {
+    ellipse(x + random(-depth, depth), y + random(-depth, depth), depth / 2, depth / 4);
+  }
+}
+
+function drawBlossom(x, y) {
+  const blossomColors = [
+    color(255, 182, 193, 100), // Light pink with more transparency
+    color(255, 105, 180, 120), // Hot pink with transparency
+    color(255, 228, 225, 100)  // Soft pink with transparency
+  ];
+
+  const blossomSize = random(1, 20); // Smaller, delicate blossom size
+  
+  noStroke();
+  fill(random(blossomColors)); // Random transparent blossom color
+  for (let i = 0; i < 5; i++) {
+    ellipse(x + random(-10, 10), y + random(-10, 10), blossomSize, blossomSize);
+  }
+}
+
+function draw() {
+  // No continuous drawing needed
+}
+
 </script>
