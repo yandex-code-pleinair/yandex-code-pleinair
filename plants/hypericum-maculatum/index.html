@@ -3,6 +3,7 @@
 <script>
   function setup() {
   createCanvas(450, 800, WEBGL);
+  trunk = createGraphics(700, 700);
   leaves = createGraphics(450, 400);
   leaves.background(255, 255, 255, 0);
   leaves.randomSeed(0);
@@ -21,7 +22,6 @@ function draw() {
   noStroke()
 
   const h = 700;
-  trunk = createGraphics(h, h);
   trunk.background(222, 222, 222);
   trunk.randomSeed(0);
   trunk.noStroke();
