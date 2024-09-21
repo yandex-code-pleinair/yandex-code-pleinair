@@ -15,6 +15,7 @@ function setup() {
 function branch(x, y, angle, length) {
   let x2 = x + cos(angle) * length;
   let y2 = y + sin(angle) * length;
+  stroke("#2b1700");
   strokeWeight(length / 10);
   line(x, y, x2, y2);
   length *= random(0.65, 1);
