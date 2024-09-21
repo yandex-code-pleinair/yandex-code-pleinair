@@ -1,17 +1,4 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
-</script>
+let a="F",s=a,l,n,b,g=5,c=[],h=0,e=0,r={F:"FF+[+F-F-F]-[-F+F+F]"};function G(){let t="";for(let i=0;i<s.length;i++)t+=r[s[i]]||s[i];s=t,l*=.7}function setup(){createCanvas(450,800);b=radians(25);colorMode(HSB,100);for(let i=0;i<g;i++){G();for(let j=0;j<s.length;j++)']'===s[j]&&c.push(color(random(5,30),80,100,80))}}function draw(){background(255);translate(width/2,height);n=b+map(noise(frameCount*.02),0,1,-.1,.1);s=a;l=35;for(let i=0;i<5;i++)h=0,e=0,T(),G()}function T(){for(let i=0;i<s.length;i++){let t=s[i];if("F"==t)stroke(30,60,40),strokeWeight(map(e,0,g-1,4,1)),line(0,0,0,-l),translate(0,-l);else if("+"==t)rotate(n);else if("-"==t)rotate(-n);else if("["==t)push(),e++;else if("]"==t){fill(c[h]);strokeWeight(1);stroke(0,0,0,50);let z=map(l,0,50,5,13);ellipse(0,0,z,2*z);h++;pop();e--}}}</script>

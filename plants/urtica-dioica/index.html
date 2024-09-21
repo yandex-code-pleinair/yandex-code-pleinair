@@ -7,11 +7,36 @@
 
   function draw() {
     background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    randomSeed(0);
+    noStroke();
+    
+    
+    fill('green')
+    let x = width / 2;
+    let y = height / 2 - 200;
+       
+    let w = 30;
+    let h = 300;
+    rect(x, y, w, h)
+    
+    stroke('rgb(106,226,106)');
+    strokeWeight(5);
+    line(x, y, 55, 70);
+    
+    stroke('rgb(106,226,106)');
+    strokeWeight(5);
+    line(x + 30, y, 420, 70);
+    
+    stroke('rgb(106,226,106)');
+    strokeWeight(2);
+    line(x, y, 55, 70);
+    
+    for(let i = 0; i < 200; i++) {
+      fill('rgb(195,250,195)')
+      let x = width / 2 + random() * 300 - 150;
+      let y = height / 2 + random() * 400 - 300;
+      let d = 10 * random();
+      circle(x, y, d);
+    }
   }
 </script>

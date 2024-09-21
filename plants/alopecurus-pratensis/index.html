@@ -5,13 +5,84 @@
     createCanvas(450, 800);
   }
 
-  function draw() {
+function draw() {
     background("white");
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    //fill(0, 150, 0);
+    //stroke(0, 200, 0, 150);
+    //strokeWeight(100);
+  
+    randomSeed(0);
+    noStroke();
+  
+    drawTree();
+  
+    drawLeafs();
+  
+    //drawParticle({x:"10",y:"100"},100);
+  
+}
 
-    circle(width / 2, height / 2, 200);
-  }
+function drawTree(){
+    fill('rgb(229,88,7)')
+  
+    for (let i = 0; i < 50; i++) {
+       
+      drawParticle({x:width/2,y:height-i*10,d:30},i);
+    }
+  
+  
+  
+}
+
+function drawLeafs(){
+  
+   for(let i=0;i<5000;i++){
+      
+      fill(100, 100, 0,200);
+      
+      const x=width/2+random()*300-200;
+      
+      const y=height/2+random()*400-300;
+      
+      const d=20*random();
+      
+      drawParticle2({x:x,y:y,d:d},i)
+      
+    }
+}
+
+function drawParticle(particle, i) {
+  let x = particle.x;
+  let y = particle.y;
+  let d = noise(frameCount / 50*2, i) * particle.d;
+  
+  push();
+    translate(x, y);
+    rotate(frameCount / 1);
+  push();
+    scale(1, 1);
+    circle(0, 0, d);
+  pop();
+    //scale(0.1, 1);
+//circle(0, 0, d);
+  pop();
+}
+
+function drawParticle2(particle, i) {
+  let x = particle.x;
+  let y = particle.y;
+  let d = noise(frameCount / 50*2, i) * particle.d;
+  
+  push();
+    translate(x, y);
+    rotate(frameCount / 1);
+  push();
+    scale(1, 0.1);
+    circle(0, 0, d);
+  pop();
+    scale(0.1, 1);
+    circle(0, 0, d);
+  pop();
+}
 </script>

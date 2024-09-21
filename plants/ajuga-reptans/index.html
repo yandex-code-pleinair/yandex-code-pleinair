@@ -1,17 +1,46 @@
 <!DOCTYPE html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5..;
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
 
-  function draw() {
-    background("white");
+function setup() {
+createCanvas(450, 800);
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function draw() {
+background("white");
+background(255);
 
-    circle(width / 2, height / 2, 200);
-  }
+// само дерево
+stroke(155, 35, 0); // цвет ствола и веток
+translate(10, 700);
+
+// основной ствол не качаем
+branch(130, 12, 0); // длина ствола, нач толщина веток, глубина
+}
+
+function branch(len, weight, depth) {
+strokeWeight(weight);
+line(0, 0, 0, -len); // ветку рисуем
+translate(0, -len); // сместить точку рисования к концу ветки
+len *= 0.7;
+weight *= 0.7;
+strokeWeight(100);
+if (len > 4) { // продолжать рисовать ветки, пока длина больше 4
+push();
+stroke(200, 200, 0, 150);
+rotate(PI / 6);
+branch(len, weight, depth + 1);
+rotate(-PI / 16);
+branch(len, weight, depth + 1);
+pop();
+} else {
+stroke("#85004B");
+// длина ветки <= 4 рисовать листья
+circle(3, 5, 5);
+stroke("#E667AF");
+circle(4, 5, 3);
+
+noStroke();
+}
+}
 </script>

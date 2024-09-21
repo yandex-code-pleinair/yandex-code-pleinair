@@ -1,17 +1,96 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  let particles = [];
+  let nLeaves = 0;
+  
+  
   function setup() {
     createCanvas(450, 800);
-  }
-
-  function draw() {
     background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    for (let i = 0; i < 10; i++) {
+      let particle = {
+        x: map(i /10, 0, 1, width / 10, 9*width/10) ,
+        y: height,
+        delta: random(),
+        vx: random() - 0.5,
+        vy: -2,
+        d: 30,
+      };
+      particles.push(particle);
+    }
+  }
+  
+  
+  function drawLeaf(x, y){
+    push();
+    fill('green');
+    translate(x, y);
+    rotate(frameCount / 10);
+    size = map(random(), 0, 1, 1, 2);
+    ellipse(0, 0, 10*size, 20*size);
+    
+    pop();
+  }
+  
+  
+  function drawFlower(x, y){
+    push();
+    size = map(random(), 0, 1, 1, 3);
+    c = random(['yellow', 'white', 'pink']);
+    fill(c);
+    // rotate(random())
+    for (let j=-2; j <2; j++){
+      push()
+      translate(x, y)
+      rotate(j*5)
+      triangle(0,7, - 5, -10, +5, -10);
+      pop()
+    }
+    pop();
+  }
+  function draw() {
+  
+    noFill()
+    stroke(200, 100, 0)
+    for (let i = 0; i < particles.length; i++) {
+      let particle = particles[i];
+      let x = particle.x;
+      let y = particle.y;
+      let d = map(noise(frameCount/20), 0, 1, particle.d/2, particle.d);
+  
+      if (random() < 0.1){
+        drawLeaf(x, y)
+        nLeaves += 1
+      }
+      
+      if ((random() < 0.1) && (y < 0.95 * height) && (nLeaves > 30)){
+        drawFlower(x, y)
+      }
+      
+      // split
+      if (random() < 0.01) {
+        if (particles.length < 100) {
+          particle.d *= 0.6;
+          vx = (random() - 0.5)*2;
+          let newParticle = {
+            x: particle.x,
+            y: particle.y,
+            vx: vx,
+            vy: -2 + abs(noise(vx)),
+            d: particle.d,
+            delta: -particle.delta
+          };
+          particles.push(newParticle);
+        }
+      }
+      // update
+  
+  
+      particle.y += particle.vy;
+      particle.x += particle.vx;
+      fill("white")
+      circle(x + 10*sin(frameCount / 10 + particle.delta ), y, d);
+    }
   }
 </script>

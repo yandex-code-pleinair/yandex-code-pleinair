@@ -1,17 +1,113 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+let branches = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background("white");
+
+  // Начальные ветви (стебли)
+  let x = width / 2;
+  let y = height;
+  let angle = -PI / 2;
+  let length = 120;
+  branch(x, y, angle, length);
+
+  // Добавляем начальные частицы для листьев/цветов
+  for (let i = 0; i < 50; i++) {
+    let particle = {
+      x: width / 2,
+      y: height - length,
+      vx: random(-0.5, 0.5),
+      vy: random(-1, -0.5),
+      d: 10,
+      color: color(random(100, 200), random(200, 255), random(100, 150), 150)
+    };
+    particles.push(particle);
+  }
+}
+
+function branch(x, y, angle, length) {
+  let x2 = x + cos(angle) * length;
+  let y2 = y + sin(angle) * length;
+  
+  // Используем градиенты цвета для ветвей в зависимости от высоты
+  let gradient = map(y2, height, 0, 0, 255);
+  stroke(gradient, 150, 100);
+  strokeWeight(length / 8);
+  
+  // Добавляем лёгкую тень для глубины
+  stroke(gradient, 100, 100, 100);
+  line(x + 2, y + 2, x2 + 2, y2 + 2); 
+  
+  // Основной стебель
+  stroke(gradient, 200, 150);
+  line(x, y, x2, y2);
+  
+  if (length < 10) return;
+
+  // Вращение и сужение угла для органичного роста
+  let dAngle = random(-0.3, 0.3);
+  branch(x2, y2, angle + dAngle, length * random(0.6, 0.85));
+  branch(x2, y2, angle - dAngle, length * random(0.6, 0.85));
+  
+  // Добавляем ветви в массив для частиц (листьев)
+  branches.push({ x: x2, y: y2, length: length });
+}
+
+function draw() {
+  if (frameCount > 1000) {
+    noLoop();  // Останавливаем анимацию на 1000 кадре
   }
 
-  function draw() {
-    background("white");
+  // Рисуем все частицы (листья и цветы)
+  for (let i = 0; i < particles.length; i++) {
+    let particle = particles[i];
+    drawParticle(particle, i);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    // Обновляем положение частицы
+    particle.x += particle.vx;
+    particle.y += particle.vy;
 
-    circle(width / 2, height / 2, 200);
+    // Если частица уходит за границы, сбрасываем её положение
+    if (particle.y < 0 || particle.x < 0 || particle.x > width) {
+      particle.x = width / 2;
+      particle.y = height - 120;
+    }
   }
+
+  // Добавляем новые частицы к ветвям (новые листья)
+  if (frameCount % 20 == 0) {
+    for (let i = 0; i < branches.length; i++) {
+      let b = branches[i];
+      particles.push({
+        x: b.x,
+        y: b.y,
+        vx: random(-0.3, 0.3),
+        vy: random(-1, -0.5),
+        d: random(5, 15),
+        color: color(random(100, 200), random(200, 255), random(100, 150), 150)
+      });
+    }
+  }
+}
+
+function drawParticle(particle, i) {
+  noStroke();
+  
+  // Эффект "дыхания" через изменение размера с использованием синусоиды
+  let scaleFactor = sin(frameCount / 20 + i) * 0.5 + 1;
+  let d = particle.d * scaleFactor;
+
+  // Используем цвет частицы
+  fill(particle.color);
+  ellipse(particle.x, particle.y, d, d * 1.5);
+  
+  // Добавляем лёгкую тень для частиц
+  fill(red(particle.color), green(particle.color), blue(particle.color), 80);
+  ellipse(particle.x + 2, particle.y + 2, d, d * 1.5);
+}
+
 </script>

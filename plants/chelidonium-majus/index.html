@@ -2,16 +2,86 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+  createCanvas(450, 800);
+  frameRate(2);
+}
+
+function draw() {
+  background("white");
+
+  trunk();
+  treeCrownBack();
+  arcs();
+  for (let i = 0; i < 5; i++) {
+     ozonHeart(); 
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function trunk() {
+  const bottom = height - height * 0.125;
+  const top = height / 2 + height * 0.125;
+  const mid = width / 2;
+  const steps = 50;
+  const step = Math.abs(bottom - top) / steps;
+  
+  stroke('black');
+  
+  for (let i = 0; i < steps; i++) {
+    strokeWeight(100 - 70 * noise(i));
+    line(mid, bottom - i*step, mid, bottom - (i + 1) *step);
   }
+}
+
+function treeCrownBack() {
+  const centerX = width / 2;
+  const centerY = height / 2;
+  
+  const steps = 5;
+  const step = Math.abs(centerY - height * 0.25) / steps;
+  
+  fill("blue");
+  stroke("#0D08FF13");
+  // noStroke();
+  strokeWeight(30);
+  
+  for (let i = 0; i < steps; i++) {
+    circle(centerX, centerY - step * i, 250 + 200 * noise((i - 2) * 100) - i);
+  }
+}
+
+function ozonHeart() {
+  const centerX = random(width / 2 - 250, width / 2 + 250);
+  const centerY = random(height / 2, height * 0.25);
+  
+  const size = 30;
+  
+  fill("white");
+  noStroke();
+  heart(centerX, centerY, size)
+  
+}
+
+function heart(x, y, size) {
+  beginShape();
+  vertex(x, y);
+  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 1.5, x, y + size);
+  bezierVertex(x + size, y + size / 1.5, x + size / 2, y - size / 2, x, y);
+  endShape(CLOSE);
+}
+
+function arcs() {
+  for (let i = 0; i < 50; i++) {
+    const x = random(width / 2 - 120, width / 2 + 120);
+    const y = random(height / 1.5, height * 0.15);
+    arcDraw(x, y, 5)
+  }
+}
+
+function arcDraw(x, y, size) {
+  stroke("#0805A3");
+  strokeWeight(5);
+  noFill();
+  arc(x, y, 20, 10, 0 + PI * 0.1, PI * 0.9);
+}
+
 </script>

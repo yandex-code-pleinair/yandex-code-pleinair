@@ -1,17 +1,56 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
+let angle;
+let branchFactor;
+let minLength;
+let maxDepth;
 
-  function draw() {
-    background("white");
+function setup() {
+  createCanvas(450, 800);
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function draw() {
+      background(240, 248, 255); // Цвет фона
+    angle = PI / 4; // 45 градусов
+    branchFactor = 0.7; // Коэффициент уменьшения длины ветви
+    minLength = 10;
+    maxDepth = 10;
+    stroke(139, 69, 19); // Цвет ствола (коричневый)
+    translate(width / 2, height);
+ branch(100, 10, 0);
+}
 
-    circle(width / 2, height / 2, 200);
-  }
+// Функция для рисования ветвей
+function branch(len, branchWidth, depth) {
+    strokeWeight(branchWidth);
+    // Задаем градиент цвета для ветвей
+    let inter = map(depth, 0, maxDepth, 0, 1);
+    let r = lerp(139, 34, inter); // От коричневого к зеленому
+    let g = lerp(69, 139, inter);
+    let b = lerp(19, 34, inter);
+    stroke(r, g, b);
+
+    line(0, 0, 0, -len);
+    translate(0, -len);
+
+    if (len > minLength && depth < maxDepth) {
+        push();
+        let newAngle = angle + random(-0.2, 0.2);
+        rotate(newAngle);
+        branch(len * branchFactor, branchWidth * 0.7, depth + 1);
+        pop();
+
+        push();
+        let newAngle2 = -angle + random(-0.2, 0.2);
+        rotate(newAngle2);
+        branch(len * branchFactor, branchWidth * 0.7, depth + 1);
+        pop();
+    } else {
+        // Рисуем листья
+        noStroke();
+        fill(34, 139, 34); // Зеленый цвет
+        ellipse(0, 0, 8, 8);
+    }
+}
 </script>

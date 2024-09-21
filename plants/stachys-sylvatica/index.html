@@ -1,17 +1,102 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  let maxFrames = 1000;
+  let xoff = 0;
+  let yoff = 1000;
+  let leafXoff = 5000;
+  let flowerXoff = 8000;
+
   function setup() {
     createCanvas(450, 800);
+    noFill();
+    frameRate(60);
   }
 
   function draw() {
-    background("white");
+    background(255);
+    translate(width / 2, height);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    let growth = map(frameCount, 0, maxFrames, 0, height / 1.5);
+    drawPsychoStem(growth);
+    drawPsychoLeaves(growth);
+    drawPsychoFlowers(growth);
 
-    circle(width / 2, height / 2, 200);
+    if (frameCount >= maxFrames) {
+      noLoop();
+    }
+  }
+
+  function drawPsychoStem(len) {
+    stroke(random(255), random(255), random(255), 200);
+    strokeWeight(random(1, 5));
+    beginShape();
+    for (let y = 0; y > -len; y -= random(5, 20)) {
+      let x = noise(xoff) * random(50, 100) - 50;
+      vertex(x, y);
+      xoff += random(0.01, 0.1);
+    }
+    endShape();
+    translate(0, -len);
+  }
+
+  function drawPsychoLeaves(growth) {
+    if (growth > 50) {
+      let leafSize = map(growth, 50, height / 1.5, 50, 200);
+
+      for (let i = -1; i <= 1; i += 2) {
+        push();
+        rotate(i * random(20, 90));
+        drawPsychoLeaf(leafSize);
+        pop();
+      }
+    }
+  }
+
+  function drawPsychoLeaf(len) {
+    stroke(random(255), random(255), random(255), 200);
+    strokeWeight(random(1, 5));
+    beginShape();
+    for (let x = 0; x < len; x++) {
+      let y = noise(leafXoff) * len * random(0.5, 1.5);
+      vertex(x, y);
+      leafXoff += random(0.02, 0.05);
+    }
+    for (let x = len; x > 0; x--) {
+      let y = noise(leafXoff) * len * random(0.5, 1.5);
+      vertex(x, -y);
+      leafXoff += random(0.02, 0.05);
+    }
+    endShape(CLOSE);
+  }
+
+  function drawPsychoFlowers(growth) {
+    if (growth > height / 2) {
+      let flowerSize = map(growth, height / 2, height / 1.5, 50, 150);
+
+      for (let i = 0; i < 360; i += random(90, 180)) {
+        push();
+        rotate(i);
+        drawPsychoFlower(flowerSize);
+        pop();
+      }
+    }
+  }
+
+  function drawPsychoFlower(len) {
+    stroke(random(255), random(255), random(255), 200);
+    strokeWeight(random(2, 7));
+    beginShape();
+    for (let x = 0; x < len; x++) {
+      let y = noise(flowerXoff) * len * random(0.5, 2);
+      vertex(x, y);
+      flowerXoff += random(0.03, 0.1);
+    }
+    for (let x = len; x > 0; x--) {
+      let y = noise(flowerXoff) * len * random(0.5, 2);
+      vertex(x, -y);
+      flowerXoff += random(0.03, 0.1);
+    }
+    endShape(CLOSE);
   }
 </script>

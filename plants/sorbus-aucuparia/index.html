@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  function renderLeave() {
+  for (let i = 0; i < 500; i++) {
+    const x = width / 2 + random() * 300 - 150;
+    const y = height / 2 + random() * 550 - 300;
+    const d = 10 * random();
+    
+    fill(
+      100 * random(),
+      200 * random(),
+      0,
+      200,
+    )
+    ellipse(x, y, 100, 20, 10);
   }
+}
 
-  function draw() {
-    background("white");
+function renderTreeTrunk() {
+  const x = width / 2;
+  const y = height - 200;
+  const w = 30;
+  const h = 200;
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+  fill(
+    208 * random(),
+    104 * random(),
+    0,
+    200,
+  );
+  rect(x, y, w, h);
+}
 
-    circle(width / 2, height / 2, 200);
+function renderBerry() {
+  for (let i = 0; i < 500; i++) {
+    const x = width / 2 + random() * 300 - 150;
+    const y = height / 2 + random() * 550 - 300;
+    const d = 10 * random();
+    
+    fill(
+      185 + 70 * random(),
+      50 * random(),
+      0,
+      200,
+    )
+    circle(x, y, d);
   }
+}
+
+function setup() {
+  createCanvas(450, 800);
+}
+
+function draw() {
+  background("white");
+  randomSeed(0);
+  noStroke();
+
+  renderTreeTrunk();
+
+  renderLeave();
+  
+  renderBerry();
+}
 </script>

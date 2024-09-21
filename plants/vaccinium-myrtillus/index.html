@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-
+let angle;
 
 function setup() {
   createCanvas(450, 800);
@@ -11,6 +11,8 @@ function setup() {
 
 function draw() {
   background("white");
+
+  angle = 60;
 
   translate(width / 2, height);
   
@@ -48,7 +50,7 @@ function branch(h, level) {
 
     push();
 
-    rotate(60);
+    rotate(angle);
 
     strokeWeight(3);
     line(0, 0, 0, -h);

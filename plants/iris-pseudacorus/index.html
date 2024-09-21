@@ -1,17 +1,78 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  const petals = [];
+  
   function setup() {
     createCanvas(450, 800);
-  }
-
-  function draw() {
     background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    angleMode(DEGREES);
+  
+  
+    fill(255, 215, 0);
+    for (let i = 0; i < 50; i++) {
+      petals.push({
+        x: 200 + cos((TWO_PI * i) / 3) * 50,
+        y: 200 + sin((TWO_PI * i) / 3) * 100,
+        w: 100,
+        h: 150,
+        angle: random(360),
+        inner: false,
+      });
+  
+      petals.push({
+        x: 200 + cos((TWO_PI * i) / 3) * 30,
+        y: 240 + sin((TWO_PI * i) / 3) * 70,
+        w: 50,
+        h: 100,
+        angle: random(360),
+        inner: true,
+      });
+    }
+    
+    drawStem();
+    drawPetals();
+  }
+  
+  function drawPetals() {
+    for (let petal of petals) {
+      push();
+      translate(petal.x, petal.y);
+      rotate(petal.angle); 
+  
+      if (petal.inner) {
+        fill(255, 230, 50);
+      } else {
+        fill(255, 215, 0);
+      }
+  
+      stroke(200, 150, 0);
+      strokeWeight(2);
+      drawPetal(0, 0, petal.w, petal.h, petal.inner);
+  
+      pop();
+    }
+  }
+  
+  function drawStem() {
+    stroke(0, 128, 0);
+    strokeWeight(20);
+    line(200, 500, 200, 300); 
+  }
+  
+  function drawPetal(x, y, w, h, inner = false) {
+    noStroke();
+  
+    beginShape();
+    if (inner) {
+      vertex(x, y);
+      bezierVertex(x - w / 4, y - h / 2, x + w / 4, y - h / 2, x, y);
+      bezierVertex(x + w / 4, y + h / 2, x - w / 4, y + h / 2, x, y);
+    } else {
+      vertex(x, y);
+      bezierVertex(x - w / 2, y - h / 2, x + w / 2, y - h / 2, x, y);
+      bezierVertex(x + w / 2, y + h / 2, x - w / 2, y + h / 2, x, y);
+    }
+    endShape(CLOSE);
   }
 </script>

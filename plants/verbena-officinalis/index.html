@@ -1,17 +1,82 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  const canvasWidth = 450
+  const canvasHeight = 800;
   function setup() {
-    createCanvas(450, 800);
+    createCanvas(canvasWidth, canvasHeight);
   }
 
+
+  const groundColors = [
+    {
+      r: 234,
+      g: 208,
+      b: 168,
+    },
+    {
+      r: 182,
+      g: 159,
+      b: 102,
+    },
+    {
+      r:64,
+      g: 41,
+      b: 5,
+    },
+    {
+      r: 118,
+      g: 85,
+      b: 43,
+    }
+  ]
   function draw() {
     background("white");
+    randomSeed(0)
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    noStroke()
+    const width = canvasWidth / 9;
+    const height = canvasHeight / 16;
 
-    circle(width / 2, height / 2, 200);
+    for(let x=25; x < canvasWidth; x += width) {
+      for(let y=20; y < canvasHeight; y += height) {
+        generateTree(x,y,width,height)
+
+      }
+    }
+  }
+
+
+  function generateTree (x,y,width,height) {
+
+    setGround(x,y,width, height)
+
+    generateWinterTree(x,y,width,height)
+  }
+
+  function setGround (x,y,w,h) {
+
+    const groundColor = groundColors[parseInt(random() * 4)];
+    fill(groundColor.r, groundColor.g, groundColor.b);
+    arc(x+w, y+h+20, 20, 20, 0, PI, PIE);
+  }
+
+
+  function generateWinterTree (x,y,w,h) {
+
+    fill("green");
+    generateTriangle(0)
+    generateTriangle(1)
+    generateTriangle(2)
+
+    function generateTriangle(count) {
+      const x1 = x+w-10;
+      const y1 = y+h+(count*10);
+      const x2 = x+w+10;
+      const y2 = y+h+(count*10);
+      const x3 = x+w;
+      const y3 = y+h-10+(count*10);
+      triangle(x1, y1, x2, y2, x3, y3);
+    }
   }
 </script>

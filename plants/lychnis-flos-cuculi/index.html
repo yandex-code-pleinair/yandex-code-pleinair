@@ -1,17 +1,113 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let alphaValues = [];
+let flowerPositions = [];
+
+function setup() {
+  createCanvas(450, 800);
+  noStroke();
+
+  // Задаем фиксированные позиции для цветков
+  flowerPositions = [
+    { x: width / 2 - 100, y: height / 2 - 50 }, // Позиция первого цветка
+    { x: width / 2, y: height / 2 + 50 },        // Позиция второго цветка
+    { x: width / 2 + 100, y: height / 2 - 50 }  // Позиция третьего цветка
+  ];
+
+  // Генерация альфа-значений
+  for (let i = 0; i < 3; i++) {
+    alphaValues.push(random(0, 20));
+  }
+}
+
+function draw() {
+  background(255);
+
+  for (let i = 0; i < 3; i++) {
+    let pos = flowerPositions[i];
+
+    alphaValues[i] += random(-10, 10);
+    alphaValues[i] = constrain(alphaValues[i], 100, 255);
+    
+    drawFlower(pos.x, pos.y, alphaValues[i]);
+    drawStem(pos.x, pos.y + 80, 5);
+  }
+}
+
+// Функция для рисования одного цветка
+function drawFlower(x, y, alpha) {
+  push();
+  translate(x, y);
+
+  let petalCount = 9;
+  let petalRadius = 80;
+  let centerRadius = 20;
+
+  for (let i = 0; i < petalCount; i++) {
+    let angle = TWO_PI / petalCount * i;
+    drawPetal(angle, petalRadius, alpha);
   }
 
-  function draw() {
-    background("white");
+  // Рисуем центр
+  fill(34, 139, 34, alpha);
+  ellipse(0, 0, centerRadius, centerRadius);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+  pop();
+}
 
-    circle(width / 2, height / 2, 200);
-  }
+function drawPetal(angle, petalRadius, alpha) {
+  let petalLength = 120; // Длина лепестка
+  let petalWidth = 60;  // Ширина лепестка
+
+  fill(255, 192, 203, alpha);
+
+  push();
+  rotate(angle);
+  
+  // Первый сегмент лепестка
+  beginShape();
+  vertex(0, 0);
+  bezierVertex(petalWidth / 50, -petalLength / 8, petalWidth, -petalLength / 2, petalWidth / 2, -petalLength);
+  bezierVertex(0, -petalLength / 2, -petalWidth / 2, -petalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
+  // Вторая часть лепестка
+  let subPetalLength = petalLength * 0.6;
+  fill(255, 160, 200, alpha);
+  
+  beginShape();
+  vertex(5, 0);
+  bezierVertex(petalWidth / 20, -subPetalLength / 4, petalWidth / 2, -subPetalLength / 2, petalWidth / 4, -subPetalLength);
+  bezierVertex(0, -subPetalLength / 2, -petalWidth / 4, -subPetalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
+  // Третья часть лепестка
+  let sub2PetalLength = petalLength * 0.3;
+  fill(255, 110, 150, alpha);
+  
+  beginShape();
+  vertex(5, 0);
+  bezierVertex(petalWidth / 20, -sub2PetalLength / 4, petalWidth / 2, -sub2PetalLength / 2, petalWidth / 4, -sub2PetalLength);
+  bezierVertex(0, -sub2PetalLength / 2, -petalWidth / 4, -sub2PetalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
+  pop();
+}
+
+// Функция для рисования стебля
+function drawStem(x, y, thickness) {
+  push();
+  stroke(34, 139, 34);
+  strokeWeight(thickness);
+  noFill();
+
+  beginShape();
+  vertex(x, y);
+  bezierVertex(x - 150, y - 20, x + 105, y - 10, x, y - 80); // Кривая
+  endShape();
+  
+  pop();
+}
+
 </script>

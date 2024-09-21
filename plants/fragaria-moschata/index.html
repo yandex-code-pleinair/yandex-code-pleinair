@@ -1,17 +1,77 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+ let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background('white');
+  for (let i = 0; i < 200; i++) {
+    let particle = {
+      x: random(width),
+      y: random(height),
+      vx: random(-1, 1),
+      vy: random(-1, 1),
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function draw() {
+  if (frameCount === 1) {
+    background('white');
   }
+  
+  let colors = ['blue', 'orange', 'pink', 'red'];
+  let contrastColors = {
+    'blue': 'orange',
+    'orange': 'blue',
+    'pink': 'red',
+    'red': 'pink'
+  };
+  
+  let particlesToDraw = 2;
+  
+  for (let i = 0; i < particlesToDraw; i++) {
+    if (particles.length > 0) {
+      let particle = particles.shift();
+      
+      let x1 = width / 2;
+      let y1 = height / 2;
+      
+      let angle = random(TWO_PI);
+      let length = random(50, 200);
+      let x2 = x1 + cos(angle) * length;
+      let y2 = y1 + sin(angle) * length;
+      
+      let lineColor = random(colors);
+      stroke(lineColor);
+      strokeWeight(random(10, 30));
+      line(x1, y1, x2, y2);
+      
+      if (random() < 0.3) {
+        let branchAngle = angle + random(-PI/4, PI/4);
+        let branchLength = random(30, 100);
+        let branchX = x2 + cos(branchAngle) * branchLength;
+        let branchY = y2 + sin(branchAngle) * branchLength;
+        
+        let branchColor = random(colors);
+        stroke(branchColor);
+        strokeWeight(random(5, 15));
+        line(x2, y2, branchX, branchY);
+      }
+      
+      let letter = char(random(65, 90));
+      fill(contrastColors[lineColor]);
+      noStroke();
+      textSize(16);
+      textAlign(CENTER, CENTER);
+      text(letter, (x1 + x2) / 2, (y1 + y2) / 2);
+    }
+  }
+  
+  if (particles.length === 0) {
+    noLoop();
+  }
+}
 </script>

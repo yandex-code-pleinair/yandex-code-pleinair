@@ -2,16 +2,118 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
-  }
+  createCanvas(450, 800);
+  randomSeed(0);
+  background("white");
+  noLoop();
+  drawGigerTree(width / 2, height - 50, -PI / 2, 50, 10); // Start the tree drawing
+  drawMouth(width / 2, height - 150, 100)
+}
 
-  function draw() {
-    background("white");
+function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function drawGigerTree(x, y, angle, length, depth) {
+    if (length < 4 || depth <= 0) return;
 
-    circle(width / 2, height / 2, 200);
-  }
+    const xEnd = x + cos(angle) * length;
+    const yEnd = y + sin(angle) * length;
+
+    if (depth > 3) {
+      const r = random() * 100;
+      stroke(50 + r, 0 + r, 0);
+    } else {
+      stroke(50, 100 + random() * 100, 50);
+    }
+    strokeWeight(length / 5 );
+    beginShape();
+    let variation = random(-5, 5); // Introduce some variability
+    for (let i = 0; i < 20; i++) {
+        let inter = map(i, 0, 30, 0, 2);
+        let xBranch = lerp(x, xEnd, inter) + random(-variation, variation); 
+        let yBranch = lerp(y + 15, yEnd, inter) + random(-variation, variation);
+        vertex(xBranch, yBranch);
+    }
+    endShape();
+
+    const vars = getRandomArbitrary(2,5);
+    length *= random(0.8, 0.9);
+  
+    for (let i = 0; i <= vars; i++) {
+      const t = getRandomArbitrary(-1,2);
+      
+      let angleVariation = random(PI / 10, PI / 4);
+      drawGigerTree(xEnd, yEnd, angle + t * angleVariation, length, depth - getRandomArbitrary(1,3));
+    }
+
+    if (depth == 1 && getRandomArbitrary(0,2) === 1) {
+        drawMechanicalSegment(xEnd, yEnd);
+    }
+  
+    if (depth == 1 && getRandomArbitrary(0,20) === 1) {
+        drawEye(xEnd, yEnd, 20);
+    }
+}
+
+function drawEye(x, y, size) {
+    stroke(0);
+    strokeWeight(2);
+    const irisSize = size * 0.4; // Set the iris size
+    const pupilSize = irisSize * 0.5; // Set the pupil size
+
+    // Draw sclera (white part)
+    fill(255); // White
+    ellipse(x, y, size, size * 0.7); // Draw the eye shape (oval)
+
+    // Draw iris
+    fill(random(0, 255), random(0, 255), random(0, 255)); // Random color for the iris
+    ellipse(x, y, irisSize, irisSize); // Draw the iris (circle)
+
+    // Draw pupil
+    fill(0); // Black color for the pupil
+    ellipse(x, y, pupilSize, pupilSize); // Draw the pupil (circle)
+
+    // Add some reflections on the eye
+    fill(255, 255, 255, 150); // White for the reflection
+    ellipse(x + size * 0.1, y - size * 0.1, size * 0.2, size * 0.2); // Simulate a light reflection
+}
+
+function drawMechanicalSegment(x, y) {
+    fill(100 + random() * 100, 50, 0);
+    noStroke();
+    ellipse(x, y, random(5, 20));
+}
+
+function drawMouth(x, y, size) {
+    stroke(0)
+    fill(50, 50, 50); // Dark gray for the jaw
+    beginShape();
+    vertex(x - size / 2, y); // Left corner of the jaw
+    bezierVertex(x - size / 2 + size * 0.1, y - size * 0.3, // Control point for upper jaw
+                 x + size / 2 - size * 0.1, y - size * 0.3, // Control point for upper jaw
+                 x + size / 2, y); // Right corner of the jaw
+    endShape(); // Complete the upper jaw
+
+    // Draw the mouth opening
+    fill(155, 0, 0); // Red for the interior of the mouth
+    ellipse(x, y + size * 0.1, size, size * 0.5); // Draw the inside of the mouth
+
+    // Draw the teeth
+    fill(255); // White for teeth
+    for (let i = 0; i < 6; i++) {
+        let toothX = map(i, 0, 5, x - size / 2 + 15, x + size / 2 - 15); // Position teeth
+        let toothY = y + 0; 
+        let toothWidth = 15; // Width of the tooth
+        let toothHeight = 30; // Height of the tooth
+
+        // Draw each tooth as a triangle
+        beginShape();
+        vertex(toothX, toothY); // Base of the tooth
+        vertex(toothX - toothWidth / 2, toothY - toothHeight); // Left point
+        vertex(toothX + toothWidth / 2, toothY - toothHeight); // Right point
+        endShape(CLOSE);
+    }
+}
+  
 </script>

@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
+  // Filippov Daniil
+  let itts=1e5,x=0,y=0;
+  function setup(){createCanvas(450,800),background(255),translate(width/2,height),noStroke(),fill(0,128,0),draw()}
+  function draw(){for(let t=0;t<itts;t++){var n=random(100);(n<1?one:n<86?two:n<94?three:four)()}}
+  function one(){drawPoint(0,.16*y)}
+  function two(){drawPoint(.85*x+.04*y,-.04*x+.85*y+1.6)}
+  function three(){drawPoint(.2*x-.26*y,.23*x+.22*y+1.6)}
+  function four(){drawPoint(-.15*x+.28*y,.26*x+.24*y+.44)}
+  function drawPoint(t,n){x=t,y=n,rect(40*x,40*-y,1,1)}
 </script>
