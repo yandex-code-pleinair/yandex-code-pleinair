@@ -1,17 +1,73 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let angle;
+
+function setup() {
+  createCanvas(450, 800);
+  colorMode(RGB);
+  angleMode(DEGREES);
+}
+
+function draw() {
+  background("white");
+
+  angle = 60;
+
+  translate(width / 2, height);
+  
+
+  noStroke()
+
+  fill(0, 255, 255, 60);
+  rect(-225, -800, 450, 300);
+
+    fill(255, 255, 255);
+  for(let i = 0; i<7;i++) {
+    ellipse(-500 * random(), -700 + i *20 * random(), 80, 40);
   }
 
-  function draw() {
-    background("white");
+  fill(128, 64, 48);
+  rect(-14, -200, 28, 200);
+  
+  fill(255, 240, 0);
+  circle(50, -650, 110);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+  translate(0, -200);
 
-    circle(width / 2, height / 2, 200);
+    for(let i = 1; i<7;i++) {
+        branch(122/i, i-1);
+    }
+
+}
+
+function branch(h, level) {
+  stroke(58, level * 45,20);
+
+  h *= 0.7;
+
+  if (h > 2) {
+
+    push();
+
+    rotate(angle);
+
+    strokeWeight(3);
+    line(0, 0, 0, -h);
+
+    translate(0, -h);
+
+    branch(h, level + 1);
+
+    pop();
+
+    push();
+    rotate(-50);
+    line(0, 0, 0, -h);
+    translate(0, -h);
+    branch(h, level + 0.1);
+
+    pop();
   }
+}
 </script>
