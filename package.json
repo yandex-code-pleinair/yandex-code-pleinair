@@ -4,8 +4,8 @@
   "description": "Код-пленэр — это выезд для разработчиков, которые ищут вдохновения",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch server.js"
+    "start": "node --watch server.js",
+    "screenshots": "npx playwright test screenshots.spec.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
     "eslint": "^9.11.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "@types/node": "^22.5.5",
     "eslint-plugin-html": "^8.1.1"
   }
 }
