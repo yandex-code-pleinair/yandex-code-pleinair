@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<meta charset="utf-8"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
  function setup() {
   createCanvas(450, 800);
-  
+
 }
 
 function draw() {
@@ -13,9 +14,9 @@ function draw() {
   text('Самое красивое дерево', 50, 400);
   randomSeed(0);
   noStroke();
-  
-  
-  
+
+
+
   fill('white')
   for (let i = 0; i < 30; i++) {
     let x = width/2
@@ -24,7 +25,7 @@ function draw() {
     let h = 50
     rect(x, y, w, h)
   }
-  
+
   fill('black')
   for (let i = 0; i < 150; i++) {
     let x = width/2

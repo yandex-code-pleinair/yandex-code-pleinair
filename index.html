@@ -14,38 +14,23 @@
   }
 
   main {
-    width: calc(var(--width) * 50);
-    height: calc(var(--height) * 3);
-    animation: scrollAndZoom 130s ease-in-out infinite alternate;
+    width: calc(var(--width) * 30);
+    height: calc(var(--height) * 2);
+    transform: translate(0, -12.5%) scale(0.75);
+    animation: scroll 30s ease-in-out infinite alternate;
   }
 
-  @keyframes scrollAndZoom {
+  @keyframes scroll {
     0% {
-      transform: translateX(-75%) scale(0.5);
-    }
-
-    16.67% {
-      transform: translateX(-50%) scale(1);
-    }
-
-    33.33% {
-      transform: translateX(0%) scale(0.5);
+      transform: translate(0, -12.5%) scale(0.75);
     }
 
     50% {
-      transform: translateX(-50%) scale(1);
-    }
-
-    66.67% {
-      transform: translateX(-75%) scale(0.5);
-    }
-
-    83.33% {
-      transform: translateX(-50%) scale(1);
+      transform: translate(calc(-1 * var(--width) * 20 + 100vw), -12.5%) scale(0.75);
     }
 
     100% {
-      transform: translateX(0%) scale(0.5);
+      transform: translate(0, -12.5%) scale(0.75);
     }
   }
 
@@ -64,7 +49,7 @@
 </style>
 
 <script>
-  fetch('./plants/plants.json').then(res => {
+  fetch('./plants/changed.json').then(res => {
     res.json().then(plants => {
       plants.splice(150)
       console.log(plants)
@@ -85,7 +70,7 @@
           const timers = timersByWindow.get(source)
           if (timers) {
             timers.ping = Date.now()
-            console.log(`Ping received from iframe: ${url}`)
+            // console.log(`Ping received from iframe: ${url}`)
           }
         }
       })
