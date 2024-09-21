@@ -15,12 +15,13 @@
 
   function draw() {
     background(220);
-
+    drawDaisies(30);
+    drawDaisies(50);
     angle = PI / 5 + sin(frameCount * 0.02) * 0.1;
-
     stroke(branchColor);
     translate(width / 2, height); 
     branch(len);
+    // //translate(width / 2, 0); 
     branch(len);
     branch(len);
     branch(len);
@@ -47,9 +48,33 @@
       noStroke();
       fill(leafColor);
       ellipse(0, 0, 10, 10);
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++) { // Добавляем немного больше листьев
           ellipse(random(-10, 10), random(-10, 10), 10, 10);
       }
     }
   }
+
+  function drawDaisies(h) {
+    // Рисуем несколько ромашек
+    for (let i = 0; i < width + 50; i += 50) {
+      drawDaisy(i, height - h);
+    }
+  }
+
+  function drawDaisy(x, y) {
+    push();
+    translate(x, y);
+    // Рисуем лепестки
+    fill(255);
+    noStroke();
+    for (let i = 0; i < 10; i++) {
+      ellipse(0, 15, 10, 30);
+      rotate(PI / 5);
+    }
+    // Рисуем центр цветка
+    fill(255, 204, 0);
+    ellipse(0, 0, 20, 20);
+    pop();
+  }
+
 </script>
