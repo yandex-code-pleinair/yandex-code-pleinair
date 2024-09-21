@@ -7,11 +7,25 @@
 
   function draw() {
     background("white");
+    randomSeed(0);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    noStroke();
+    
+    fill('black');
+    for (let i=0; i<30; i++) {
+      const x = width/2;
+      const y = height/2 + height/2 * random();
+      const w = 30;
+      const h = 10;
+      rect(x, y, w, h);
+    }
 
-    circle(width / 2, height / 2, 200);
+    for (let i=0; i<200; i++) {
+      fill(100 + 155 * random(), 0, 100 + 155 * random(), 200);
+      const x = width / 2 + random()*300 - 150;
+      const y = height / 2 + random()*400 - 300;
+      const d = 100 * random();
+      circle(x, y, d);
+    }
   }
 </script>
