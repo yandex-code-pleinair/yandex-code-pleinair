@@ -1,17 +1,122 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+function setup() {
+  createCanvas(450, 800);
+  noLoop();
+  background("white");
+  drawTree(225, 600, 32);
+}
+
+function drawTree(x, y, size) {
+  const colors = {
+    wood: [color(240, 230, 220), color(110, 100, 90)],
+    leaf: [color(150, 180, 100), color(120, 150, 80)]
+  };
+  
+  for (let i = 0; i < 8; i++) drawBlock(x, y - i * size, ...colors.wood, "wood", size);
+  
+  // Листва
+  for (let layer = 0; layer < 7; layer++) {
+    const width = 5 - Math.floor(layer / 2);
+    for (let i = -width; i <= width; i++) {
+      for (let j = -width; j <= width; j++) {
+        if (random() > 0.3 || (abs(i) <= 1 && abs(j) <= 1)) {
+          const leafX = x + (i - 0.5) * size;
+          const leafY = y - (8 + layer) * size + j * size / 2;
+          if (dist(0, 0, i, j) <= width - 1 || random() > 0.5) {
+            drawBlock(leafX, leafY, ...colors.leaf, "leaf", size);
+          }
+        }
+      }
+    }
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function drawBlock(x, y, mainColor, borderColor, type, size) {
+  push();
+  translate(x, y);
+  
+  // Основной цвет блока
+  fill(mainColor);
+  noStroke();
+  rect(0, 0, size, size);
+  
+  if (type === "wood") {
+    drawWoodTexture(size, mainColor, borderColor);
+  } else {
+    drawLeafTexture(size, mainColor, borderColor);
   }
+  
+  noFill();
+  stroke(borderColor);
+  strokeWeight(2);
+  rect(0, 0, size, size);
+  
+  pop();
+}
+
+function drawWoodTexture(size, mainColor, borderColor) {
+  for (let i = 0; i < 4; i++) {
+    let y = random(size);
+    stroke(borderColor);
+    strokeWeight(random(1, 3));
+    line(0, y, size, y);
+  }
+  
+  for (let i = 0; i < 3; i++) {
+    fill(borderColor);
+    noStroke();
+    let spotSize = random(3, 6);
+    let x = random(spotSize, size - spotSize);
+    let y = random(spotSize, size - spotSize);
+    ellipse(x, y, spotSize, spotSize);
+  }
+}
+
+function drawLeafTexture(size, mainColor, borderColor) {
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      let x = i * (size / 5);
+      let y = j * (size / 5);
+      let squareSize = size / 5;
+      
+      let squareColor = lerpColor(mainColor, borderColor, random(0, 0.5));
+      fill(squareColor);
+      noStroke();
+      rect(x, y, squareSize, squareSize);
+    }
+  }
+  
+  stroke(lerpColor(mainColor, borderColor, 0.7));
+  strokeWeight(1);
+  line(0, 0, size, size);
+  line(size, 0, 0, size);
+  
+  for (let i = 0; i < 10; i++) {
+    let detailColor = lerpColor(mainColor, color(180, 200, 120), random(0.1, 0.4));
+    fill(detailColor);
+    noStroke();
+    let dotSize = random(2, 4);
+    let x = random(dotSize, size - dotSize);
+    let y = random(dotSize, size - dotSize);
+    
+    // 50% шанс нарисовать круг или квадрат
+    if (random() > 0.5) {
+      ellipse(x, y, dotSize, dotSize);
+    } else {
+      rect(x, y, dotSize, dotSize);
+    }
+  }
+  
+  for (let i = 0; i < 3; i++) {
+    let shadowColor = color(0, 0, 0, 30);
+    fill(shadowColor);
+    noStroke();
+    let shadowSize = random(4, 8);
+    let x = random(shadowSize, size - shadowSize);
+    let y = random(shadowSize, size - shadowSize);
+    ellipse(x, y, shadowSize, shadowSize);
+  }
+}
 </script>
