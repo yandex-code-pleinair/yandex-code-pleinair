@@ -3,7 +3,7 @@
 <script>
   // Filippov Daniil
   let itts=1e5,x=0,y=0;
-  function setup(){createCanvas(450,800),background(255),translate(width/2,height),noStroke(),fill(0,128,0),draw()}
+  function setup(){createCanvas(450,800),background(255),translate(width/2,height),noStroke(),fill(0,128,0),draw(),noLoop()}
   function draw(){for(let t=0;t<itts;t++){var n=random(100);(n<1?one:n<86?two:n<94?three:four)()}}
   function one(){drawPoint(0,.16*y)}
   function two(){drawPoint(.85*x+.04*y,-.04*x+.85*y+1.6)}
