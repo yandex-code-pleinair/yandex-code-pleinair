@@ -1,17 +1,56 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
+function setup() {
+    createCanvas(400, 400);
+    background(255);
+    drawOrchid();
+}
 
-  function draw() {
-    background("white");
+function drawOrchid() {
+    // Draw petals
+    fill(128, 0, 128); // Purple color
+    noStroke();
+    
+    // Top petal
+    beginShape();
+    vertex(200, 150);
+    bezierVertex(220, 100, 280, 100, 240, 150);
+    bezierVertex(260, 200, 220, 200, 200, 150);
+    endShape(CLOSE);
+    
+    // Left petal
+    beginShape();
+    vertex(160, 180);
+    bezierVertex(140, 130, 180, 130, 180, 180);
+    bezierVertex(180, 220, 140, 220, 160, 180);
+    endShape(CLOSE);
+    
+    // Right petal
+    beginShape();
+    vertex(240, 180);
+    bezierVertex(260, 130, 220, 130, 220, 180);
+    bezierVertex(220, 220, 260, 220, 240, 180);
+    endShape(CLOSE);
+    
+    // Bottom petal
+    beginShape();
+    vertex(200, 210);
+    bezierVertex(240, 230, 260, 270, 200, 250);
+    bezierVertex(140, 270, 160, 230, 200, 210);
+    endShape(CLOSE);
+    
+    // Draw center of the flower
+    fill(255, 255, 0); // Yellow color
+    ellipse(200, 180, 30, 30);
+    
+    // Draw stem
+    stroke(0, 128, 0); // Green color
+    strokeWeight(5);
+    line(200, 250, 200, 350);
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
+function draw() {
+    // No continuous drawing needed
+}
 </script>

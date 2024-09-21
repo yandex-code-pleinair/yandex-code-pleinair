@@ -1,17 +1,67 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
+function setup() {
+  createCanvas(450, 800);
+}
 
-  function draw() {
-    background("white");
+// Начальные параметры дерева
+const startX = 450 / 2;
+const startY = 800;
+const trunkLength = 100;
+const angle = Math.PI / 4; // 45 градусов
+const branchFactor = 0.7; // Коэффициент уменьшения длины ветви
+const minLength = 10;
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function draw() {
+  background("white");
 
-    circle(width / 2, height / 2, 200);
-  }
+  fill("#8B4513");  
+  drawTree(startX, startY, trunkLength, angle, 10, '#8B4513', 'green');
+}
+
+// Рекурсивная функция рисования дерева
+function drawTree(x, y, len, angle, branchWidth, color1, color2) {
+  stroke(color1);
+  fill(color2);  
+  strokeWeight(branchWidth);
+  translate(x, y);
+  rotate(-Math.PI / 2);
+  line(0, 0, 0, -len);
+
+    // Позиция конца текущей ветви
+    const endX = 0;
+    const endY = -len;
+    translate(endX, endY);
+
+    if (len < minLength) {
+        // Рисуем листья
+      drawArc(0, 0, 5, 0, Math.PI / 2, 0, 'green');
+      return;
+    }
+
+    // Левая ветвь
+    drawTree(0, 0, len * branchFactor, angle + (Math.random() * 0.2 - 0.1), branchWidth * 0.7, color1, color2);
+    // Правая ветвь
+    drawTree(0, 0, len * branchFactor, angle - (Math.random() * 0.2 - 0.1), branchWidth * 0.7, color1, color2);
+}
+
+// Функция для рисования линии с учетом толщины
+function drawLine(x1, y1, x2, y2, widthData, colorData) {
+  stroke(colorData);
+  strokeWeight(widthData);
+  line(x1, y1, x2, y2);
+}
+
+// Функция для рисования линии с учетом толщины
+function drawArc(x, y, w, h, start, stop, colorData) {
+  fill(colorData);  
+  arc(x, y, w, h, start, stop);
+}
+
+// Функция для генерации случайных цветов для ветвей
+function getRandomColor() {
+  const colors = ['#8B4513', '#A0522D', '#CD853F'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
 </script>

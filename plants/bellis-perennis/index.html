@@ -1,17 +1,68 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  let angle;
+  let colors;
+
   function setup() {
     createCanvas(450, 800);
+    angle = PI / 6;
+    colors = [
+      color("#A8CC8C"),
+      color("#8CA231"),
+      color("#E2DA56"),
+      color("#647c32"),
+      color("#007a39"),
+      color("#DEC63D"),
+    ];
+    noLoop();
   }
 
   function draw() {
     background("white");
+    translate(width / 2, height);
+    branch(200);
+  }
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+  function branch(len) {
+    strokeWeight(map(len, 1, 200, 1, 20));
 
-    circle(width / 2, height / 2, 200);
+    // Start and end points
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = -len;
+
+    // Control points for Bezier curve
+    let controlX1 = random(-20, 20);
+    let controlY1 = random(-len / 2, -len / 4);
+    let controlX2 = random(-20, 20);
+    let controlY2 = random(-len / 4, 0);
+
+    // Get random colors for the gradient
+    let startColor = colors[floor(random(colors.length))];
+    let endColor = colors[floor(random(colors.length))];
+
+    // Interpolate color along the curve
+    for (let i = 0; i <= 1; i += 0.1) {
+      let interColor = lerpColor(startColor, endColor, i);
+      stroke(interColor);
+
+      // Draw small segments of the Bezier curve
+      let x = bezierPoint(startX, controlX1, controlX2, endX, i);
+      let y = bezierPoint(startY, controlY1, controlY2, endY, i);
+      point(x, y);
+    }
+
+    translate(0, -len);
+
+    if (len > 4) {
+      for (let i = 0; i < random(2, 5); i++) {
+        push();
+        rotate(random(-angle, angle));
+        branch(len * random(0.5, 0.7));
+        pop();
+      }
+    }
   }
 </script>

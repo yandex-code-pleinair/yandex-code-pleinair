@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  const petals = [
+    
+  ]
+
   function setup() {
     createCanvas(450, 800);
+    background("white");
+    
+    fill(255, 215, 0);
+    drawPetal(200, 200, 100, 150, true);
+    
   }
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  function drawPetal(x, y, w, h, inner = false) {
+    noStroke();
+    
+    beginShape();
+    if (inner) {
+      vertex(x, y);
+      bezierVertex(x - w / 4, y - h / 2, x + w / 4, y - h / 2, x, y);
+      bezierVertex(x + w / 4, y + h / 2, x - w / 4, y + h / 2, x, y);
+    } else {
+      vertex(x, y);
+      bezierVertex(x - w / 2, y - h / 2, x + w / 2, y - h / 2, x, y);
+      bezierVertex(x + w / 2, y + h / 2, x - w / 2, y + h / 2, x, y);
+    }
+    endShape(CLOSE);
   }
 </script>

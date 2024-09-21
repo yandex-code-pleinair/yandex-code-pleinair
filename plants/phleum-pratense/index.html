@@ -3,15 +3,52 @@
 <script>
   function setup() {
     createCanvas(450, 800);
+    angleMode(DEGREES);
   }
 
   function draw() {
     background("white");
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    translate(width / 2, height); // Начнем снизу по центру холста
+    drawBranch(100); // Начало рисования дерева
+  }
 
-    circle(width / 2, height / 2, 200);
+  function drawBranch(len) {
+    // Устанавливаем случайный цвет для каждой ветви
+    let r = random(120, 160);
+    let g = random(70, 90);
+    let b = random(90, 130);
+    fill(r, g, b);
+    stroke(r - 20, g - 20, b - 20);
+    strokeWeight(2);
+
+    // Выбираем случайную фигуру для каждой части ствола
+    let shapeType = floor(random(3));
+    push();
+    rotate(random(-15, 15)); // Случайный угол поворота
+    if (shapeType == 0) {
+      triangle(-len / 4, 0, len / 4, 0, 0, -len); // Треугольник
+    } else if (shapeType == 1) {
+      rect(-len / 4, -len, len / 2, len); // Прямоугольник
+    } else {
+      ellipse(0, -len / 2, len / 2, len); // Эллипс
+    }
+    pop();
+
+    // Ветвление, если длина ветви больше 10
+    if (len > 10) {
+      push();
+      translate(0, -len); // Перемещаемся в конец текущей ветви
+      rotate(random(-30, -10)); // Левая ветвь
+      drawBranch(len * 0.7);
+      pop();
+
+      push();
+      translate(0, -len);
+      rotate(random(10, 30)); // Правая ветвь
+      drawBranch(len * 0.7);
+      pop();
+    }
   }
 </script>
+

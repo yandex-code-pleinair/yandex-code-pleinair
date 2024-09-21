@@ -1,17 +1,80 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let alphaValues = [];
+let flowerPositions = [];
+
+function setup() {
+  createCanvas(450, 800);
+  noStroke();
+
+  for (let i = 0; i < 3; i++) {
+    alphaValues.push(random(100, 255));
+    
+    let x = width / 2 + random(-150, 150);
+    let y = height / 2 + random(-100, 100);
+    flowerPositions.push({x: x, y: y});
+  }
+}
+
+function draw() {
+  background(255);
+
+  for (let i = 0; i < 3; i++) {
+    let pos = flowerPositions[i];
+
+    alphaValues[i] += random(-10, 10);
+    alphaValues[i] = constrain(alphaValues[i], 100, 255);
+    
+    drawFlower(pos.x, pos.y, alphaValues[i]);
+  }
+}
+
+function drawFlower(x, y, alpha) {
+  push();
+  translate(x, y);
+
+  let petalCount = 8;
+  let petalRadius = 80;
+  let centerRadius = 20;
+
+  for (let i = 0; i < petalCount; i++) {
+    let angle = TWO_PI / petalCount * i;
+    drawPetal(angle, petalRadius, alpha);
   }
 
-  function draw() {
-    background("white");
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+  fill(34, 139, 34, alpha);
+  ellipse(0, 0, centerRadius, centerRadius);
 
-    circle(width / 2, height / 2, 200);
-  }
+  pop();
+}
+
+function drawPetal(angle, petalRadius, alpha) {
+  let petalLength = 120;
+  let petalWidth = 60;
+
+  fill(255, 192, 203, alpha);
+
+  push();
+  rotate(angle);
+  
+  // Первый сегмент лепестка
+  beginShape();
+  vertex(0, 0);
+  bezierVertex(petalWidth / 50, -petalLength / 8, petalWidth, -petalLength / 2, petalWidth / 2, -petalLength); // Внешняя кривая
+  bezierVertex(0, -petalLength / 2, -petalWidth / 2, -petalLength / 4, 0, 0);  // Внутренняя кривая
+  endShape(CLOSE);
+  
+  // Вторая часть лепестка
+  let subPetalLength = petalLength * 0.6;
+  beginShape();
+  vertex(5, 0);
+  bezierVertex(petalWidth / 20, -subPetalLength / 4, petalWidth / 2, -subPetalLength / 2, petalWidth / 4, -subPetalLength);
+  bezierVertex(0, -subPetalLength / 2, -petalWidth / 4, -subPetalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
+  pop();
+}
+
 </script>

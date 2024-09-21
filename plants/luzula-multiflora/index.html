@@ -1,17 +1,84 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+    function drawMatrix(matrix) {
+      for (let i = 0; i < 45; i++) {
+        for (let j = 0; j < 80; j++) {
+          fill(matrix[i][j].r, matrix[i][j].g, matrix[i][j].b);
+          rect(10 * i, 10 * (80 - j), 10, 10);
+        }
+      }
+    }
+
+    function rotateMatrix(matrix, angle) {
+      const newMatrix = [];
+      for (let i = 0; i < 45; i++) {
+        newMatrix.push([]);
+        for (let j = 0; j < 80; j++) {
+          newMatrix[i].push({
+            r: 255,
+            g: 255,
+            b: 255,
+          });
+        }
+      }
+
+      // for(let i = 0; i < 45; i++) {
+      //   for(let j = 0; j < 45; j++) {
+      //     const newI = i 
+      //   }
+      // }
+
+      return matrix;
+    }
+
   function setup() {
     createCanvas(450, 800);
   }
 
+    function drawTree() {
+      let matrix = [];
+
+      for (let i = 0; i < 45; i++) {
+        matrix.push([]);
+        for (let j = 0; j < 80; j++) {
+          matrix[i].push({
+            r: 255,
+            g: 255,
+            b: 255,
+          });
+        }
+      }
+
+      drawStvol(matrix);
+      drawLeaves(matrix);
+
+      matrix = rotateMatrix(matrix, 0.52);
+
+      return matrix;
+    }
+
+    function drawStvol(matrix) {
+      for (let i = 19; i < 25; i++) {
+        for (let j = 0; j < 40; j++) {
+          matrix[i][j] = { r: 102, g: 67, b: 67 };
+        }
+      }
+    }
+
+    function drawLeaves(matrix) {
+      for (let i = 5; i < 41; i++) {
+        for (let j = 40; j < 80; j++) {
+          matrix[i][j] = { r: 196, g: 215, b: 178 };
+        }
+      }
+    }
+
   function draw() {
     background("white");
+    const treeMatrix = drawTree();
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    drawMatrix(treeMatrix);
   }
+
 </script>
