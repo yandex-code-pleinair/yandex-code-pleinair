@@ -28,16 +28,19 @@
     eyeOffsetY = sin(time * 2) * 2;
 
     // Покачивание усов
-    mustacheAngle = sin(time) * 5;
+    mustacheAngle = sin(time * 10) * 10;
 
     // Покачивание цветов
-    flowerSway = sin(time * 1.5) * 5;
+    flowerSway = sin(time * 10) * 5;
 
     // Рисуем тело морковки
     drawCarrotBody();
 
     // Рисуем глаза
     drawEyes();
+
+    // Рисуем рот
+    drawLaughingMouth();
 
     // Рисуем усы
     drawMustache();
@@ -54,18 +57,21 @@
     translate(carrotX, carrotY);
 
     // Основная форма морковки
-    fill(255, 165, 0); // Оранжевый цвет
+    fill(255, 135, 0); // Оранжевый цвет
     noStroke();
     beginShape();
-    vertex(-50, -150);
-    bezierVertex(-70, 0, -30, 150, 0, 200);
-    bezierVertex(30, 150, 70, 0, 50, -150);
+    vertex(-5, -150);
+    bezierVertex(-150, -30, -80, 20, 0, 200);
+    bezierVertex(80, 20, 150, -30, 5, -150);
     endShape(CLOSE);
 
     // Горизонтальные линии для текстуры
-    stroke(230, 120, 0); // Более темный оранжевый
-    for (let y = -140; y <= 180; y += 10) {
-      line(-50, y, 50, y);
+    stroke(200, 120, 0); // Более темный оранжевый
+    for (let lineWidth = 0, y = -140; y <= 180; y += 10) {
+      const condition = y < 20;
+      lineWidth = lineWidth + (condition ? 8 : -8);
+      const finalLineWidth = lineWidth > 85 ? 85 : lineWidth;
+      line(-1 * finalLineWidth, y, finalLineWidth, y);
     }
 
     pop();
@@ -94,7 +100,7 @@
 
   function drawMustache() {
     push();
-    translate(carrotX, carrotY - 30);
+    translate(carrotX, carrotY);
     rotate(mustacheAngle);
 
     // Левый ус
@@ -117,6 +123,23 @@
     pop();
   }
 
+  function drawLaughingMouth() {
+    // Контур рта
+    fill(255, 100, 100); // Красный цвет для внутренней части рта
+    stroke(0);
+    strokeWeight(2);
+
+    beginShape();
+    vertex(width / 2 - 80, height / 2 + 50);
+    bezierVertex(width / 2 - 50, height / 2 + 120, width / 2 + 50, height / 2 + 120, width / 2 + 80, height / 2 + 50);
+    bezierVertex(width / 2 + 50, height / 2 + 160, width / 2 - 50, height / 2 + 160, width / 2 - 80, height / 2 + 50);
+    endShape(CLOSE);
+
+    // Зубы
+    fill(240, 255); // Белые зубы
+    noStroke();
+  }
+
   function drawLeaves() {
     push();
     translate(carrotX, carrotY - 150);
@@ -135,30 +158,32 @@
     pop();
   }
 
+  const flowers = [
+    {x: -25, y: -40},
+    {x: 0, y: -45},
+    {x: 25, y: -40},
+  ];
+
   function drawFlowers() {
     push();
+
     translate(carrotX, carrotY - 150);
 
-    // Левый цветок
-    push();
-    translate(-25, -40);
-    rotate(flowerSway);
-    drawFlower();
-    pop();
+    if (random() < 0.09) {
+      const randomFlower = floor(random(flowers.length - 1));
+      flowers.push({
+        x: flowers[randomFlower].x + floor(random(-20, 20)),
+        y: flowers[randomFlower].y + floor(random(-20, 20)),
+      });
+    }
 
-    // Центральный цветок
-    push();
-    translate(0, -45);
-    rotate(flowerSway);
-    drawFlower();
-    pop();
-
-    // Правый цветок
-    push();
-    translate(25, -40);
-    rotate(flowerSway);
-    drawFlower();
-    pop();
+    flowers.forEach((flower) => {
+      push();
+      translate(flower.x, flower.y);
+      rotate(flowerSway);
+      drawFlower();
+      pop();
+    });
 
     pop();
   }
@@ -166,6 +191,7 @@
   function drawFlower() {
     fill(255); // Белые лепестки
     stroke(0);
+
     for (let angle = 0; angle < 360; angle += 45) {
       push();
       rotate(angle);
