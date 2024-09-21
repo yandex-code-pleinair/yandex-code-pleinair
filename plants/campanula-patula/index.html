@@ -16,10 +16,17 @@
         strokes.push([random() * 256, random() * 256, random() * 256]);
 
     let visible = [];
-    for (let i = 0; i < n; i++) {
+    visible.push(Array(m).fill(false));
+    let started = Array(m).fill(false);
+    started[3] = true
+    for (let i = 1; i < n; i++) {
       visible.push([]);
       for (let j = 0; j < m; j++) {
-        visible[i].push(random() < 1.0 * i / n);
+        let v = (started[j - 1] || started[j] || started[j + 1]) && random() < 1.0 * i / n;
+        visible[i].push(v);
+        if (v) {
+          started[j] = true;
+        }
       }
     }
     visible[0][3] = true;
