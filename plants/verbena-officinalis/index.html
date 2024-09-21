@@ -7,11 +7,45 @@
 
   function draw() {
     background("white");
+    randomSeed(0)
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    noStroke()
+    // stroke("#10990050");
+    // strokeWeight(20);
 
-    circle(width / 2, height / 2, 200);
+    for(let i=0; i < 200; i++) {
+      generateTree()
+    }
+  }
+
+
+  function generateTree () {
+
+    const x = (width / 2) + (random() * 400) - 200;
+    const y = (height / 2) + (random() * 400) - 200;
+
+    const baseColor = {
+      r: 100 + 155 * random(),
+      g: 100 + 155 * random(),
+      b: 0
+    };
+
+    fill(baseColor.r, baseColor.g, baseColor.b);
+    //
+    circle(x, y, 30);
+
+    generateTreeBase(x, y, baseColor)
+  }
+
+  function generateTreeBase (x,y, baseColor) {
+    const rectWidth = 5;
+    const rectHeight = 15;
+
+    // fill(baseColor.r, baseColor.g, baseColor.b);
+    rect(x - 5, y+10, rectWidth, rectHeight)
+  }
+
+  function generateCircleLeaf (x,y) {
+
   }
 </script>
