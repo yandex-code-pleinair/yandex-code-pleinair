@@ -6,12 +6,35 @@
   }
 
   function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  const BACKGROUND = '#000'
+  background(BACKGROUND);
+  
+  for (let i = -100; i < 100; i += 20) {
+    for (let j = -100; j < 100; j += 20) {
+      fill(0, 150, 0);
+      stroke(0, 255, 164,  33);
+      circle(i, j, i * j * 0.005);
+    }
   }
+  for (let i = -70; i < 70; i += 10) {
+    for (let j = -70; j < 70; j += 10) {
+      fill(198, 0, 0);
+      stroke(0, 198, 55,  40);
+      circle(i, j, i * j * 0.01);
+    }
+  }
+  for (let i = -50; i < 50; i += 10) {
+    for (let j = -50; j < 50; j += 10) {
+      fill(255, 150, 0);
+      stroke(0, 255, 164,  33);
+      circle(i, j, i * j * 0.01);
+    }
+  }
+  
+  
+  fill(149, 69, 39);
+  stroke(0, 149, 69, 39);
+  triangle(0, -20, -20, 180, 20, 180);
+  
+}
 </script>
