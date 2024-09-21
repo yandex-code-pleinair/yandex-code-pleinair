@@ -39,14 +39,13 @@ function setup() {
   // Generate the L-system sentence
   for (let i = 0; i < generations; i++) {
     generate();
-  }
-  
-  // Pre-generate leaf colors
-  for (let i = 0; i < sentence.length; i++) {
+    for (let i = 0; i < sentence.length; i++) {
     if (sentence.charAt(i) === ']') {
-      leafColors.push(color(random(15, 35), 80, 80, 80));
+      leafColors.push(color(random(5,30), 80, 100, 80));
     }
   }
+  // Pre-generate leaf colors
+}
 }
 
 
@@ -55,7 +54,7 @@ function draw() {
   translate(width / 2, height);
   
   // Use Perlin noise for more random movement
-  angle = baseAngle + map(noise(frameCount * 0.01), 0, 1, -0.1, 0.1);
+  angle = baseAngle + map(noise(frameCount * 0.02), 0, 1, -0.1, 0.1);
   
   sentence = axiom;
   len = 35;
@@ -64,6 +63,7 @@ function draw() {
     turtle();
     generate();
   }
+ 
 }
 
 function turtle() {
