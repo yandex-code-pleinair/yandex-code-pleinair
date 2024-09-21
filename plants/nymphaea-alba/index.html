@@ -1,17 +1,56 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+ function setup() {
+  createCanvas(450, 800);
+  background(255);
+
+  let x = width / 2;
+  let y = height / 2;
+
+  let len = 70;
+
+  let angle = PI / 6; 
+
+  stroke(0);
+  branch(x, y, len, -PI / 2, angle, 8);
+}
+
+function branch(x, y, length, angle, branchAngle, depth) {
+  let x2 = x + cos(angle) * length;
+  let y2 = y + sin(angle) * length;
+
+  strokeWeight(map(length, 10, 150, 1, 10)); // Более узкие ветви
+  stroke(51, 25, 0); // Коричневый цвет ствола
+  line(x, y, x2, y2);
+
+  if (depth > 0) {
+    let newLength = length * 0.7; // Уменьшаем длину ветви
+
+    branch(x2, y2, newLength, angle - branchAngle, branchAngle, depth - 1);
+    branch(x2, y2, newLength, angle + branchAngle, branchAngle, depth - 1);
+  } else {
+    drawFlower(x2, y2);
+  }
+}
+
+function drawFlower(x, y) {
+  push();
+  translate(x, y);
+
+  let petalCount = int(random(5, 8));
+  let petalRadius = 10;
+  let petalColor = color(random(200, 255), random(150, 200), random(150, 255));
+  
+  for (let i = 0; i < petalCount; i++) {
+    let angle = TWO_PI / petalCount * i;
+    fill(petalColor);
+    noStroke();
+    ellipse(cos(angle) * petalRadius, sin(angle) * petalRadius, petalRadius * 0.8, petalRadius * 1.5);
   }
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
+  fill(255, 223, 0);
+  ellipse(0, 0, petalRadius * 0.8, petalRadius * 0.8);
+  pop();
+}
 </script>
