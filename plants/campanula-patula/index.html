@@ -33,5 +33,18 @@
           circle(60 * (j + 1), 60 * (i + 1), 20);
       }
     }
+    
+    for (let i = 0; i < m; i++) {
+      stroke(strokes[i][0], strokes[i][1], strokes[i][2]);
+      let prev = -1;
+      for (let j = 0; j < n ; j++) {
+        if (visible[j][i]) {
+          if (prev > 0) {
+            line(60 * (i + 1), 60 * (n - prev) - 15, 60 * (i + 1), 60 * (n - j) + 15);
+          }
+          prev = j;
+        }
+      }
+    }
   }
 </script>
