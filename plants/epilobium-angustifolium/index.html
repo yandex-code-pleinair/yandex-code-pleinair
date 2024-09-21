@@ -25,7 +25,9 @@ function setup() {
   vertex(width / 2 + stvolWidth / 2, height - height / 4);
   vertex(width / 2 + stvolWidth, height);
 
+
   // Stop drawing the shape.
+  strokeWeight(0); 
   endShape(CLOSE);
 
   // Крона
@@ -39,35 +41,36 @@ function setup() {
   
   
   for (let i = 0; i < 200; i++) { // выведет 0, затем 1, затем 2
-    plotLeaf(croneCenterX, croneCenterY)
+    let [x, y] = genRandRadialXY(croneCenterX, croneCenterY) 
+    plotLeaf(x, y)
   }
   
   // Яблоки
   for (let i = 0; i < 35; i++) {
-    plotApple(croneCenterX, croneCenterY)
+    let [x, y] = genRandRadialXY(croneCenterX, croneCenterY) 
+    plotApple(x, y)
   }
 
 }
 
-function plotLeaf(croneCenterX, croneCenterY) {
+function plotLeaf(x, y) {
   fill(0 , 128 + (random(60) - 30), 0);
     
   noStroke()
-  let angle = radians(random(360)); // convert to radians
-  let radius = random(30, 200); // random radius between 150 and 250
-  let x = croneCenterX + cos(angle) * radius;
-  let y = croneCenterY + sin(angle) * radius;
-
   circle(x, y, random(20,50));  
 }
 
-function plotApple(croneCenterX, croneCenterY) {
-  noStroke()
-
+function genRandRadialXY(croneCenterX, croneCenterY) {
   let angle = radians(random(360)); // convert to radians
   let radius = random(30, 200); // random radius between 150 and 250
   let x = croneCenterX + cos(angle) * radius;
   let y = croneCenterY + sin(angle) * radius;
+  
+  return [x, y];
+}
+
+function plotApple(x, y) {
+  noStroke()
 
   stroke('#913636')
   strokeWeight(5);
