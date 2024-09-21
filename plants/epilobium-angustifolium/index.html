@@ -14,18 +14,37 @@
   
   
   // Крона
-  for (let i = 0; i < 3; i++) { // выведет 0, затем 1, затем 2
-   
+  
+  fill(0 , 128, 0);
+  strokeWeight(20);
+  stroke("#10990050");
+
+  
+  let croneCenterX = (width / 2)
+  let croneCenterY = (height / 4)
+  circle(croneCenterX, croneCenterY, 300);
+  
+  
+  for (let i = 0; i < 100; i++) { // выведет 0, затем 1, затем 2
+    fill(0 , 128 + (random(60) - 30), 0);
+    
+    noStroke()
+    let angle = radians(random(360)); // convert to radians
+    let radius = random(0, 190); // random radius between 150 and 250
+    let x = croneCenterX + cos(angle) * radius;
+    let y = croneCenterY + sin(angle) * radius;
+    
+    circle(x, y, random(20,50));
   }
   
-  fill("green");
-  stroke("#10990050");
-  strokeWeight(20);
-
-  circle(width / 2, height / 4, 300);
+  // Земля
+  fill("#964B00");
+  rect(0, height - 50, width, 50);
+  
 }
 
 function draw() {
 
 }
+
 </script>
