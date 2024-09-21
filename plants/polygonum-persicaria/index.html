@@ -2,16 +2,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
-  }
+	createCanvas(800, 800);
+	background(0); // Set a black background once
+	strokeWeight(2);
+	noFill();
+	
+	// Start drawing from the center of the canvas
+	let baseLength = 100;
+	let baseAngle = -PI / 2; // Upward direction
+	let maxDepth = 8;        // Max recursion depth for branches
+	
+	stroke(255, 0, 200); // Neon pink
+	drawBranch(width / 2, height, baseLength, baseAngle, maxDepth);
+	}
+	
+	// Recursive function to draw the branches
+	function drawBranch(x, y, length, angle, depth) {
+	if (depth == 0) return;
+	
+	// Calculate the new point for the next branch
+	let newX = x + length * cos(angle);
+	let newY = y + length * sin(angle);
+	
+	// Neon colors that shift slightly each time
+	let r = 100 + random(155);
+	let g = 0 + random(55);
+	let b = 200 + random(55);
+	stroke(r, g, b, 150);  // Semi-transparent glow effect
+	
+	// Draw the current branch
+	line(x, y, newX, newY);
+	
+	// Randomize the next branches, giving a cyberpunk chaotic style
+	let newLength = length * 0.7;
+	let newAngle = angle + random(-PI / 6, PI / 6);  // Randomize angle for cyberpunk feel
+	
+	// Recursive calls for the next level of branches
+	drawBranch(newX, newY, newLength, newAngle - PI / 4, depth - 1);
+	drawBranch(newX, newY, newLength, newAngle + PI / 4, depth - 1);
+	
+	// Draw circles on the endpoints to represent flowers (cyberpunk style)
+	fill(r, b, g, 200); // Bright neon green/purple circles
+	noStroke();
+	ellipse(newX, newY, length / 4);  // Neon circles as 'flowers'
+	noFill();
+	}
+	
+	function draw() {
+	// The draw function is left empty to stop continuous background clearing,
+	// so the branches stay visible without fading out.
+	}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
 </script>
