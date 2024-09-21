@@ -1,17 +1,61 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  let angle;
+
+function setup() {
+  createCanvas(600, 400);
+  angle = PI / 6;
+  noLoop();
+}
+
+function draw() {
+  background(255, 240, 245); // Light pink background
+  translate(width / 2, height);
+  branch(100);
+}
+
+function branch(len) {
+  // Draw branch
+  stroke(139, 69, 19, 100); // Brown with transparency
+  strokeWeight(len * 0.1);
+  line(0, 0, 0, -len);
+  
+  translate(0, -len);
+  
+  if (len > 4) {
+    // Recursively draw smaller branches
+    push();
+    rotate(angle);
+    branch(len * 0.67);
+    pop();
+    
+    push();
+    rotate(-angle);
+    branch(len * 0.67);
+    pop();
+    
+    // Draw flowers at the end of smaller branches
+    if (len < 45) {
+      drawFlower(len);
+    }
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function drawFlower(size) {
+  noStroke();
+  
+  // Draw petals
+  fill(255, 182, 193, 150); // Light pink with transparency
+  for (let i = 0; i < 5; i++) {
+    push();
+    rotate(TWO_PI / 5 * i);
+    ellipse(0, -size / 2, size / 2, size);
+    pop();
   }
+  
+  // Draw center
+  fill(255, 105, 180, 200); // Darker pink for the center
+  ellipse(0, 0, size / 4, size / 4);
+}
 </script>
