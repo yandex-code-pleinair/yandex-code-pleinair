@@ -83,6 +83,31 @@ function drawPetal(angle, petalRadius, alpha) {
   bezierVertex(0, -subPetalLength / 2, -petalWidth / 4, -subPetalLength / 4, 0, 0);
   endShape(CLOSE);
   
+    // Третья часть лепестка
+  let sub2PetalLength = petalLength * 0.3;
+  fill(255, 110, 150, alpha);
+  
+  beginShape();
+  vertex(5, 0);
+  bezierVertex(petalWidth / 20, -sub2PetalLength / 4, petalWidth / 2, -sub2PetalLength / 2, petalWidth / 4, -sub2PetalLength);
+  bezierVertex(0, -sub2PetalLength / 2, -petalWidth / 4, -sub2PetalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
+  pop();
+}
+
+// Функция для рисования стебля
+function drawStem(x, y, thickness) {
+  push();
+  stroke(34, 139, 34);
+  strokeWeight(thickness);
+  noFill();
+
+  beginShape();
+  vertex(x, y);
+  bezierVertex(x - 150, y - 20, x + 105, y - 10, x, y - 80); // Кривая
+  endShape();
+  
   pop();
 }
 
