@@ -3,7 +3,8 @@
 <script>
 
 let showLeaves = true; // Variable to toggle leaves visibility
-let toggleInterval; // Variable for the interval timer
+let currentColor = 'green'; // Track the current color state
+let intervalId; // Variable for the interval timer
 
 function setup() {
   createCanvas(450, 800);
@@ -14,8 +15,8 @@ function setup() {
   // Draw the initial tree
   drawTree();
 
-  // Start the timer to toggle leaves visibility
-  toggleInterval = setInterval(toggleLeaves, 1000); // Toggle every second
+  // Start the color changing cycle
+  startColorCycle();
 }
 
 function draw() {
@@ -30,7 +31,7 @@ function drawTree() {
   drawBranch(200, 500, -135, 50);
   drawBranch(200, 500, 5, 20);
   drawBranch(200, 500, -200, 20);
-  drawTreeStump(200, 650, 150);
+  drawLayer(200, 650, 150);
 }
 
 function drawBranch(x, y, angle, length) {
@@ -53,33 +54,45 @@ function drawBranch(x, y, angle, length) {
   }
 }
 
-function drawTreeStump(x, y, size) {
+function drawLayer(x, y, size) {
   // Draw tree layers
   fill(14, 139, 34); // Green color
   triangle(x, y - size, x - size / 5, y, x + size / 5, y);
 }
 
 function getRandomGreenColor() {
-  // Define a green palette
   const greenPalette = [
     color(0, 128, 0),   // Dark Green
     color(34, 139, 34), // Forest Green
-    color(60, 179, 113), // Medium Sea Green
-    color(127, 255, 0), // Chartreuse
     color(0, 255, 127), // Spring Green
     color(0, 255, 0),   // Lime Green
     color(50, 205, 50), // Lime
     color(144, 238, 144) // Light Green
   ];
   
-  // Pick a random color from the palette
   return random(greenPalette);
 }
 
-function drawLeaves(x, y, size) {
-  let c = getRandomGreenColor();
-  fill(c);
+function getRandomYellowColor() {
+  const yellowPalette = [
+    color(255, 255, 0), // Yellow
+    color(255, 215, 0), // Gold
+    color(255, 255, 224), // Light Yellow
+    color(255, 255, 51) // Bright Yellow
+  ];
+  
+  return random(yellowPalette);
+}
 
+function drawLeaves(x, y, size) {
+  let c;
+  if (currentColor === 'green') {
+    c = getRandomGreenColor();
+  } else if (currentColor === 'yellow') {
+    c = getRandomYellowColor();
+  }
+
+  fill(c);
   beginShape();
   vertex(x, y - size); // Top vertex
   vertex(x + size, y); // Right vertex
@@ -88,10 +101,28 @@ function drawLeaves(x, y, size) {
   endShape(CLOSE);
 }
 
-function toggleLeaves() {
-  showLeaves = !showLeaves; // Toggle visibility
-  background(255); // Clear the background
-  drawTree(); // Redraw the tree with the updated leaves state
+function startColorCycle() {
+  intervalId = setInterval(() => {
+    if (currentColor === 'green') {
+      currentColor = 'yellow'; // Change to yellow
+    } else if (currentColor === 'yellow') {
+      showLeaves = false; // Make leaves disappear
+      currentColor = 'none'; // Change to none
+      setTimeout(() => {
+        // Wait for 1000 ms, then reset
+        showLeaves = true; // Show leaves again
+        currentColor = 'green'; // Reset to green
+        background(255); // Clear the background
+        drawTree(); // Redraw the tree
+      }, 1000);
+    } else {
+      currentColor = 'green'; // Reset to green
+    }
+    
+    // Redraw the tree with the updated leaves state
+    background(255); // Clear the background
+    drawTree();
+  }, 1000); // Change every second
 }
   
 </script>
