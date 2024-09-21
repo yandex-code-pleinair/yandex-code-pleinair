@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+ function setup() {
+  createCanvas(450, 800);
+}
+
+function draw() {
+  background("white");
+  randomSeed(46)
+  noStroke()
+  fill('green')
+  rect(width / 2, height / 2 - 150, 10, 500, 3)
+  for (let i = 0; i < 30; i++) {
+    let r = 100 + 155 * random()
+    let g = 100 + 155 * random()
+    
+    
+    let x = width / 2 + random() * 300 - 150;
+    let y = height / 2 + random() * 300 - 150;
+  
+    fill(255, 0, 0, 200)
+    circle(x, y, 60)
   }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
+}
 </script>
