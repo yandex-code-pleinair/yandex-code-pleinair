@@ -6,7 +6,7 @@ let particles = [];
 function setup() {
   createCanvas(450, 800);
   background("white");
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 1; i++) {
     let particle = {
       x: width / 2,
       y: height / 2,
@@ -14,17 +14,6 @@ function setup() {
       vy: -1,
       d: 200,
       type: "stem",
-    };
-    particles.push(particle);
-  }
-  for (let i = 0; i < 1; i++) {
-    let particle = {
-      x: width / 2,
-      y: height / 2,
-      vx: random() * 0.1,
-      vy: 1,
-      d: 4,
-      type: "root",
     };
     particles.push(particle);
   }
@@ -38,7 +27,7 @@ function draw() {
     let x = particle.x;
     let y = particle.y;
     let d = noise(frameCount / 50, i) * particle.d;
-
+    
     if (particle.type == "stem") {
       stroke("black");
       if (d > 1) {
@@ -65,31 +54,7 @@ function draw() {
         }
       }
     }
-    
-    if (particle.type == "root") {
-      stroke("green");
-      circle(x, y, d);    
 
-      // update
-      particle.y += particle.vy;
-      particle.x += particle.vx;
-
-      // split
-      if (random() < 0.1) {
-        if (particles.length < 200) {
-          let newParticle = {
-            x: particle.x,
-            y: particle.y,
-            vx: (random() - random()) * 2,
-            vy: particle.vy,
-            d: particle.d,
-            type: "root",
-          };
-          particles.push(newParticle);
-        }
-      }
-
-    }
   }
 }
 </script>
