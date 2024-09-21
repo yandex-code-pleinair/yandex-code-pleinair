@@ -1,63 +1,43 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  let particles = [];
+let particles = [];
 
 function setup() {
   createCanvas(450, 800);
-  background("white");
-  for (let i = 0; i < 1; i++) {
+  background('white')
+  for (let i = 0; i < 1000; i++) {
     let particle = {
       x: width / 2,
       y: height,
-      vx: random() - 0.5,
-      vy: -1,
-      d: 200,
+      vx: random(-.1, .1),
+      vy: random(-1, 0),
     };
     particles.push(particle);
   }
 }
 
 function draw() {
+  noFill()
+  strokeWeight(.1)
+  randomSeed(0)
   for (let i = 0; i < particles.length; i++) {
-    fill(random()*255, random()*255, random()*255)
+    stroke(0, random()*255, random()*255)
     let particle = particles[i];
-    drawParticle(particle, i);
-
-    // update
-    particle.y += particle.vy;
-    particle.x += particle.vx;
-
-    // split
-    if (random() < 0.01) {
-      particle.d = particle.d * 0.6;
-      if (particles.length < 100) {
-        let newParticle = {
-          x: particle.x,
-          y: particle.y,
-          vx: (random() - random()) * 2,
-          vy: particle.vy,
-          d: particle.d,
-        };
-        particles.push(newParticle);
-      }
-    }
+    let d = noise(frameCount/10,i) ** 5 * 150
+    circle(particle.x, particle.y, d);
+    particle.x+=particle.vx
+    particle.y+=particle.vy
+    particle.vx+=map(Math.random(),0,1,-.01,.01)
   }
-}
-
-function drawParticle(particle, i) {
-  let x = particle.x;
-  let y = particle.y;
-  let d = noise(frameCount / 200, i) * particle.d;
-  push();
-    translate(x, y);
-    rotate(frameCount / 10);
-    push();
-      scale(1, 0.1);
-      circle(0, 0, d);
-    pop();
-    scale(0.1, 1);
-    circle(0, 0, d);
-  pop();
+  
+    for (let i=0; i<20;i++){
+    fill(0, 0, 0)
+    let x = width/2
+    let y = height/2 + random()*300 + 250
+    const w = 30
+    const h = 20
+    rect(x, y, w, h);
+  }
 }
 </script>
