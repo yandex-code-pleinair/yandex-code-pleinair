@@ -7,6 +7,6 @@ require('./plants/changed.json').slice(0, 149).forEach(plant => {
     await page.goto(`http://${plant}.localhost:4000/plants/${plant}/index.html`)
     await page.evaluate(() => window.frameRate(80))
     await page.waitForFunction(() => !window.isLooping() || window.frameCount === 1000)
-    await page.locator('canvas').screenshot({ path: `./screenshots/${plant}.png` })
+    await page.locator('canvas').first().screenshot({ path: `./screenshots/${plant}.png` })
   })
 })

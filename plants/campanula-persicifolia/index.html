@@ -4,21 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beautiful Random Tree with Campanula Flowers</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-color: #f0f0f0;
-    }
-    canvas {
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-    }
-  </style>
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
@@ -35,6 +20,7 @@
       let angle = -PI / 2;
       let length = 180;
       branch(x, y, angle, length, maxBranches);
+      setTimeout(noLoop, 20000);
     }
 
     function draw() {

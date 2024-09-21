@@ -13,8 +13,8 @@ function draw() {
   var colorArray = ["green", "red", "yellow"];
   noStroke();
   strokeWeight(20);
-  
-  
+
+
   DrawTrunk(300, 500);
   var n = 0;
   for (let i = 0; i < 150; i++){
@@ -24,13 +24,12 @@ function draw() {
     if (n > 2)
       n = 0;
     DrawLeave(
-      random(middleWidthPoint - 100, middleWidthPoint + 100), 
+      random(middleWidthPoint - 100, middleWidthPoint + 100),
       random(middleWidthPoint - 100, middleWidthPoint + 200),
       random(10, 50),
       random(10, 50),
       clr);
   }
-  DrawLeave(width / 2, height / 2);
 }
 
 
@@ -41,7 +40,7 @@ function DrawTrunk(startPoint, topHeight) {
   var middleWidthPoint = width / 2;
   var middleHeightPoint = height / 2;
   triangle(
-    middleWidthPoint - 30, middleHeightPoint + startPoint, 
+    middleWidthPoint - 30, middleHeightPoint + startPoint,
     middleWidthPoint + 30, middleHeightPoint + startPoint,
     middleWidthPoint, middleHeightPoint + startPoint - topHeight);
 }
