@@ -2,7 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
 let alphaValues = [];
-let flowerPositions = [];
+let flowerPositions = []; // Объявляем массив здесь
 
 function setup() {
   createCanvas(450, 800);
@@ -17,7 +17,7 @@ function setup() {
 
   // Генерация альфа-значений
   for (let i = 0; i < 3; i++) {
-    alphaValues.push(random(0, 20));
+    alphaValues.push(random(100, 255));
   }
 }
 
@@ -109,5 +109,6 @@ function drawStem(x, y, thickness) {
   
   pop();
 }
+
 
 </script>
