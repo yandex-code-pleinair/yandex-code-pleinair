@@ -1,17 +1,71 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
-  }
 
-  function draw() {
+const WIDTH = 450;
+const HEIGHT = 800;
+const MAX_FRAMES = 1000;
+
+let frame = 0;
+
+function setup() {
+    createCanvas(WIDTH, HEIGHT);
+}
+
+function draw() {
+    ++frame;
+
+    draw_2();
+
+    if (frame >= MAX_FRAMES) {
+        noLoop();
+    }
+}
+
+// compo filler
+function draw_1() {
     background("white");
+    noStroke();
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    fill("#4E342E");
+    rect(WIDTH * 0.5 - 10, HEIGHT * 0.75, 20, HEIGHT * 0.25);
 
-    circle(width / 2, height / 2, 200);
-  }
+    fill("#2E7D32");
+
+    triangle(
+        WIDTH * 0.25, HEIGHT * 0.75,
+        WIDTH * 0.5, HEIGHT * 0.25,
+        WIDTH * 0.75, HEIGHT * 0.75,
+    );
+}
+
+// animated compo filler
+function draw_2() {
+    background("white");
+    noStroke();
+
+    const trunkRatio = min(1, frame / 60);
+    const trunkY = HEIGHT - HEIGHT * 0.25 * trunkRatio;
+
+    fill("#4E342E");
+
+    rectCoords(
+        WIDTH * 0.5 - 10, trunkY,
+        WIDTH * 0.5 + 10, HEIGHT,
+    );
+
+    const leavesRatio = min(1, frame / 120);
+    fill("#2E7D32");
+
+    triangle(
+        WIDTH * 0.5 - WIDTH * 0.25 * leavesRatio, trunkY,
+        WIDTH * 0.5, trunkY - HEIGHT * 0.5 * leavesRatio,
+        WIDTH * 0.5 + WIDTH * 0.25 * leavesRatio, trunkY,
+    );
+}
+
+function rectCoords(sx, sy, ex, ey) {
+    rect(sx, sy, ex - sx, ey - sy);
+}
+
 </script>
