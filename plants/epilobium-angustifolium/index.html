@@ -72,7 +72,7 @@ function genRandRadialXY(croneCenterX, croneCenterY) {
   let radius = random(30, 200); // random radius between 150 and 250
   let x = croneCenterX + cos(angle) * radius;
   let y = croneCenterY + sin(angle) * radius;
-  
+    
   return [x, y];
 }
 
@@ -86,6 +86,12 @@ function plotApple(x, y) {
   noStroke()
   fill('red');
   circle(x, y, 30);
+  
+  if (random(10) < 1){
+    stroke('#FD69CD')
+    strokeWeight(5);
+    line(x+5, y, x+15, y - 5); // Shorter length for the stem
+  }
 }
 
 function draw() {
