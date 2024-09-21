@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(400, 600);
-    background("#ddfdf9");
-  }
+function setup() {
+  createCanvas(450, 800);
+  randomSeed(42)
+  background("white");
+  let x = width / 2;
+  let y = height;
+  let angle = -PI / 2;
+  let length = 110;
+  branch(x, y, angle, length);
+}
 
-  function draw() {
-    translate(width / 2, height / 2);
-    drawStem();
+function branch(x, y, angle, length) {
+  let x2 = x + cos(angle) * length;
+  let y2 = y + sin(angle) * length;
+  strokeWeight(length / 10);
+  line(x, y, x2, y2);
+  length *= random(0.65, 1);
 
-    for (let j = 0; j < 7; j++) {
-      push();
-      drawFlower(0, 0, 70, 80, color("#fa6ef4"));
-      pop();
-    }
-  }
-
-  function drawStem() {
-    stroke("#09f1e1");
-    strokeWeight(10);
-    line(0, 108, 0, 225);
-  }
-
-  function drawFlower(x, y, petalLength, petalWidth, petalColor) {
-    fill(petalColor);
-    noStroke();
-
+  if (random() > 0.7) {
+    // fill(0);
     for (let i = 0; i < 5; i++) {
-      let angle = TWO_PI * i / 5;
-      let px = x + cos(angle) * petalLength;
-      let py = y + sin(angle) * petalLength;
-
-      ellipse(px, py, petalWidth, petalLength); // Лепестки
-    }
-
-    fill("#09f1e1");
-    ellipse(x, y, petalWidth * 0.5);
+      // noStroke();
+      fill(255 * random(), 170 * random(), 0, random() * 300);
+      let s = x2 + random() * 20 - 10;
+      let v = y2 + random() * 20 - 10;
+      circle(s, v, random() * 50);
+      strokeWeight(length / 10);
   }
+    // circle(x2, y2, 10);
+  }
+
+  if (length < 5) return;
+  if (random() < 0.1 && length < 90) return;
+  let dAngle = random(-0.3, 0.3);
+  branch(x2, y2, angle + dAngle, length);
+  branch(x2, y2, angle - dAngle, length);
+}
+
 </script>
