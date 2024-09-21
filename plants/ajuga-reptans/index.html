@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js..;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5..;
 <script>
-let angleOffset = 0; // Начальное значение угла покачивания
 
 function setup() {
 createCanvas(450, 800);
@@ -13,49 +12,34 @@ background(255);
 
 // само дерево
 stroke(155, 35, 0); // цвет ствола и веток
-translate(width / 2, height);
-
-// Увеличиваем угол покачивания
-angleOffset += 0.025; // скорость качаем
+translate(10, 700);
 
 // основной ствол не качаем
-branch(100, 12, 0); // длина ствола, нач толщина веток, глубина
+branch(130, 12, 0); // длина ствола, нач толщина веток, глубина
 }
 
 function branch(len, weight, depth) {
-// уменьшаем толщину веток каждая итерация
 strokeWeight(weight);
 line(0, 0, 0, -len); // ветку рисуем
 translate(0, -len); // сместить точку рисования к концу ветки
-
-// - длину и толщину для веток
 len *= 0.7;
 weight *= 0.7;
-
-// покачивать ветки после 1
-if (depth > 0) {
-let sway = sin(angleOffset + depth) * 0.1;
-rotate(sway); // покачивать ветки
-}
-
-fill(0, 150, 0);
-stroke(0, 200, 0, 150);
 strokeWeight(100);
 if (len > 4) { // продолжать рисовать ветки, пока длина больше 4
-push(); // сохранить текущее положение
-rotate(PI / 6); // повернуть вправо
-branch(len, weight, depth + 1); // нарисовать правую ветку, увеличив уровень глубины
-pop(); // вернуть сохраненное положение
-
 push();
-rotate(-PI / 6); // повернуть влево
-branch(len, weight, depth + 1); // нарисовать левую ветку, увеличив уровень глубины
+stroke(200, 200, 0, 150);
+rotate(PI / 6);
+branch(len, weight, depth + 1);
+rotate(-PI / 16);
+branch(len, weight, depth + 1);
 pop();
 } else {
+stroke("#85004B");
 // длина ветки <= 4 рисовать листья
-let opac = random(15, 50);
-let listWH = random(10, 50);
-fill(0, 139, 34, opac); // цвет листьев
+circle(3, 5, 5);
+stroke("#E667AF");
+circle(4, 5, 3);
+
 noStroke();
 }
 }
