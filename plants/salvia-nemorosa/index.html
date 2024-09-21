@@ -1,31 +1,63 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+  let leaves = [];
+
   function setup() {
     createCanvas(450, 800);
-  }
-
-  function draw() {
     background("white");
-    randomSeed(0);
-
-    noStroke();
-    
-    fill('black');
-    for (let i=0; i<30; i++) {
-      const x = width/2;
-      const y = height/2 + height/2 * random();
-      const w = 30;
-      const h = 10;
-      rect(x, y, w, h);
+    for (let i = 0; i < 1; i++) {
+      const leaf = {
+        x: width/2,
+        y: height,
+        vx: (random()-.5),
+        vy: -1,
+        d: 200
+      };
+  
+      leaves.push(leaf); 
     }
-
-    for (let i=0; i<200; i++) {
-      fill(100 + 155 * random(), 0, 100 + 155 * random(), 200);
-      const x = width / 2 + random()*300 - 150;
-      const y = height / 2 + random()*400 - 300;
-      const d = 100 * random();
-      circle(x, y, d);
+  }
+  
+  function drawParticle(x, y, d) {
+    push();
+    translate(x, y);
+    rotate(frameCount/10);
+    scale(1, 0.5);
+    circle(0, 0, d);
+    pop();
+  }
+  
+  function draw() {
+    for (let leaf of leaves) {
+      stroke(75, 100 + 90 * random(), 80);
+      const x = leaf.x;
+      const y = leaf.y;
+      const d = map(noise(frameCount/20), 0, 1, leaf.d / 2, leaf.d);
+      
+      if (random()<.015) {
+        if (leaves.length < 100) {
+          leaf.d *= 0.6;
+          const newLeaf = {
+            x: leaf.x,
+            y: leaf.y,
+            vx: (random() - 0.5) * 3,
+            vy: -1,
+            d: leaf.d
+          };
+          leaves.push(newLeaf);
+        }
+      }
+      
+      leaf.x += leaf.vx;
+      leaf.y += leaf.vy;
+      fill(75, 100 + 90 * random(), 80);
+      drawParticle(x, y, d);
+      
+      if (random() < .01) {
+        fill(53 + 50 * random(), 58, 103 + 80*random());
+        drawParticle(x, y, 20);
+      }
     }
   }
 </script>
