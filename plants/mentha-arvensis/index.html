@@ -1,67 +1,56 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
+let angle;
+let branchFactor;
+let minLength;
+let maxDepth;
+
 function setup() {
   createCanvas(450, 800);
 }
 
-// Начальные параметры дерева
-const startX = 450 / 2;
-const startY = 800;
-const trunkLength = 100;
-const angle = Math.PI / 4; // 45 градусов
-const branchFactor = 0.7; // Коэффициент уменьшения длины ветви
-const minLength = 10;
-
 function draw() {
-  background("white");
-
-  fill("#8B4513");  
-  drawTree(startX, startY, trunkLength, angle, 10, '#8B4513', 'green');
+      background(240, 248, 255); // Цвет фона
+    angle = PI / 4; // 45 градусов
+    branchFactor = 0.7; // Коэффициент уменьшения длины ветви
+    minLength = 10;
+    maxDepth = 10;
+    stroke(139, 69, 19); // Цвет ствола (коричневый)
+    translate(width / 2, height);
+ branch(100, 10, 0);
 }
 
-// Рекурсивная функция рисования дерева
-function drawTree(x, y, len, angle, branchWidth, color1, color2) {
-  stroke(color1);
-  fill(color2);  
-  strokeWeight(branchWidth);
-  translate(x, y);
-  rotate(-Math.PI / 2);
-  line(0, 0, 0, -len);
+// Функция для рисования ветвей
+function branch(len, branchWidth, depth) {
+    strokeWeight(branchWidth);
+    // Задаем градиент цвета для ветвей
+    let inter = map(depth, 0, maxDepth, 0, 1);
+    let r = lerp(139, 34, inter); // От коричневого к зеленому
+    let g = lerp(69, 139, inter);
+    let b = lerp(19, 34, inter);
+    stroke(r, g, b);
 
-    // Позиция конца текущей ветви
-    const endX = 0;
-    const endY = -len;
-    translate(endX, endY);
+    line(0, 0, 0, -len);
+    translate(0, -len);
 
-    if (len < minLength) {
+    if (len > minLength && depth < maxDepth) {
+        push();
+        let newAngle = angle + random(-0.2, 0.2);
+        rotate(newAngle);
+        branch(len * branchFactor, branchWidth * 0.7, depth + 1);
+        pop();
+
+        push();
+        let newAngle2 = -angle + random(-0.2, 0.2);
+        rotate(newAngle2);
+        branch(len * branchFactor, branchWidth * 0.7, depth + 1);
+        pop();
+    } else {
         // Рисуем листья
-      drawArc(0, 0, 5, 0, Math.PI / 2, 0, 'green');
-      return;
+        noStroke();
+        fill(34, 139, 34); // Зеленый цвет
+        ellipse(0, 0, 8, 8);
     }
-
-    // Левая ветвь
-    drawTree(0, 0, len * branchFactor, angle + (Math.random() * 0.2 - 0.1), branchWidth * 0.7, color1, color2);
-    // Правая ветвь
-    drawTree(0, 0, len * branchFactor, angle - (Math.random() * 0.2 - 0.1), branchWidth * 0.7, color1, color2);
-}
-
-// Функция для рисования линии с учетом толщины
-function drawLine(x1, y1, x2, y2, widthData, colorData) {
-  stroke(colorData);
-  strokeWeight(widthData);
-  line(x1, y1, x2, y2);
-}
-
-// Функция для рисования линии с учетом толщины
-function drawArc(x, y, w, h, start, stop, colorData) {
-  fill(colorData);  
-  arc(x, y, w, h, start, stop);
-}
-
-// Функция для генерации случайных цветов для ветвей
-function getRandomColor() {
-  const colors = ['#8B4513', '#A0522D', '#CD853F'];
-  return colors[Math.floor(Math.random() * colors.length)];
 }
 </script>
