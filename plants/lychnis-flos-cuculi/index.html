@@ -20,16 +20,21 @@ function setup() {
 function draw() {
   background(255);
 
+
   for (let i = 0; i < 3; i++) {
     let pos = flowerPositions[i];
+
 
     alphaValues[i] += random(-10, 10);
     alphaValues[i] = constrain(alphaValues[i], 100, 255);
     
+
     drawFlower(pos.x, pos.y, alphaValues[i]);
+    drawStem(pos.x, pos.y + 80, 5);
   }
 }
 
+// Функция для рисования одного цветка
 function drawFlower(x, y, alpha) {
   push();
   translate(x, y);
@@ -38,21 +43,23 @@ function drawFlower(x, y, alpha) {
   let petalRadius = 80;
   let centerRadius = 20;
 
+
   for (let i = 0; i < petalCount; i++) {
     let angle = TWO_PI / petalCount * i;
     drawPetal(angle, petalRadius, alpha);
   }
 
-
+  // Рисуем центр
   fill(34, 139, 34, alpha);
   ellipse(0, 0, centerRadius, centerRadius);
 
   pop();
 }
 
+
 function drawPetal(angle, petalRadius, alpha) {
-  let petalLength = 120;
-  let petalWidth = 60;
+  let petalLength = 120; // Длина лепестка
+  let petalWidth = 60;  // Ширина лепестка
 
   fill(255, 192, 203, alpha);
 
@@ -62,17 +69,34 @@ function drawPetal(angle, petalRadius, alpha) {
   // Первый сегмент лепестка
   beginShape();
   vertex(0, 0);
-  bezierVertex(petalWidth / 50, -petalLength / 8, petalWidth, -petalLength / 2, petalWidth / 2, -petalLength); // Внешняя кривая
-  bezierVertex(0, -petalLength / 2, -petalWidth / 2, -petalLength / 4, 0, 0);  // Внутренняя кривая
+  bezierVertex(petalWidth / 50, -petalLength / 8, petalWidth, -petalLength / 2, petalWidth / 2, -petalLength);
+  bezierVertex(0, -petalLength / 2, -petalWidth / 2, -petalLength / 4, 0, 0);
   endShape(CLOSE);
   
   // Вторая часть лепестка
   let subPetalLength = petalLength * 0.6;
+  fill(255, 160, 200, alpha);
+  
   beginShape();
   vertex(5, 0);
   bezierVertex(petalWidth / 20, -subPetalLength / 4, petalWidth / 2, -subPetalLength / 2, petalWidth / 4, -subPetalLength);
   bezierVertex(0, -subPetalLength / 2, -petalWidth / 4, -subPetalLength / 4, 0, 0);
   endShape(CLOSE);
+  
+  pop();
+}
+
+// Функция для рисования стебля
+function drawStem(x, y, thickness) {
+  push();
+  stroke(34, 139, 34);
+  strokeWeight(thickness);
+  noFill();
+
+  beginShape();
+  vertex(x, y);
+  bezierVertex(x - 150, y - 20, x + 105, y - 10, x, y - 80); // Кривая
+  endShape();
   
   pop();
 }
