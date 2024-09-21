@@ -1,17 +1,61 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background("white");
+  for (let i = 0; i < 1; i++) {
+    let particle = {
+      x: width / 2,
+      y: height,
+      vx: random() - 0.5,
+      vy: -1,
+      d: 150,
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
+function draw() {
+  stroke("#BC8F8F")
+  for (let i = 0; i < particles.length; i++) {
+    let particle = particles[i];
+    
+    // leafs
+    if (particle.y < height / 2) {
+      if (random() < 0.01) {
+        particle.d = particle.d * 0.6;
+        if (particles.length < 100) {
+          let newParticle = {
+            x: particle.x,
+            y: particle.y,
+            vx: (random() - random()) * 2,
+            vy: particle.vy,
+            d: particle.d,
+          };
+          particles.push(newParticle);
+        }
+      }
+      noStroke();
+      fill(100 + 155 * random(), 100 + 155 * random());
+      let x = width / 2 + 300 * (random() - 0.5);
+      let y = 100+300 * random();
+      let d = 100 * random();
+      circle(x, y, d);
+      textSize(35)
+      text("🌸", x, y)
+    } else {
+      // stvol
+      let y = particle.y;
+      let d = particle.d - 70 + random() * 10; 
+      circle(width / 2, y, d);
+    }
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    // update
+    particle.y += particle.vy;
+    particle.x += particle.vx;
   }
+}
 </script>
