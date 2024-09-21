@@ -16,10 +16,17 @@
         strokes.push([random() * 256, random() * 256, random() * 256]);
 
     let visible = [];
-    for (let i = 0; i < n; i++) {
+    visible.push(Array(m).fill(false));
+    let started = Array(m).fill(false);
+    started[3] = true
+    for (let i = 1; i < n; i++) {
       visible.push([]);
       for (let j = 0; j < m; j++) {
-        visible[i].push(random() < 1.0 * i / n);
+        let v = (started[j - 1] || started[j] || started[j + 1]) && random() < 1.0 * i / n;
+        visible[i].push(v);
+        if (v) {
+          started[j] = true;
+        }
       }
     }
     visible[0][3] = true;
@@ -46,5 +53,20 @@
         }
       }
     }
+    stroke(strokes[3][0], strokes[3][1], strokes[3][2]);
+    line(60 * 4, 60 * n - 15, 60 * 4, 60 * (n - 1) + 15);
+    stroke(strokes[2][0], strokes[2][1], strokes[2][2]);
+    line(60 * 4 - 11, 60 * (n - 1) - 11, 60 * 3 + 7, 60 * (n - 2) + 7);
+    line(60 * 4 - 11, 60 * (n - 6) - 11, 60 * 3 + 7, 60 * (n - 7) + 7);
+    stroke(strokes[4][0], strokes[4][1], strokes[4][2]);
+    line(60 * 4 + 7, 60 * (n - 1) - 17, 60 * 5, 60 * (n - 9) + 15);
+    stroke(strokes[1][0], strokes[1][1], strokes[1][2]);
+    line(60 * 3 - 11, 60 * (n - 2) - 11, 60 * 2 + 7, 60 * (n - 4) + 11);
+    stroke(strokes[5][0], strokes[5][1], strokes[5][2]);
+    line(60 * 4 + 7, 60 * (n - 1) - 17, 60 * 6, 60 * (n - 10) + 15);
+    stroke(strokes[0][0], strokes[0][1], strokes[0][2]);
+    line(60 * 2 - 11, 60 * (n - 4) - 11, 60 * 1 + 7, 60 * (n - 7) + 11);
+    stroke(strokes[6][0], strokes[6][1], strokes[6][2]);
+    line(60 * 4 + 7, 60 * (n - 1) - 17, 60 * 7, 60 * (n - 10) + 15);
   }
 </script>
