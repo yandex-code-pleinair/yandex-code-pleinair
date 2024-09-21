@@ -1,17 +1,63 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background("white");
+  for (let i = 0; i < 1; i++) {
+    let particle = {
+      x: width / 2,
+      y: height,
+      vx: random() - 0.5,
+      vy: -1,
+      d: 200,
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
+function draw() {
+  for (let i = 0; i < particles.length; i++) {
+    fill(random()*255, random()*255, random()*255)
+    let particle = particles[i];
+    drawParticle(particle, i);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    // update
+    particle.y += particle.vy;
+    particle.x += particle.vx;
 
-    circle(width / 2, height / 2, 200);
+    // split
+    if (random() < 0.01) {
+      particle.d = particle.d * 0.6;
+      if (particles.length < 100) {
+        let newParticle = {
+          x: particle.x,
+          y: particle.y,
+          vx: (random() - random()) * 10,
+          vy: particle.vy,
+          d: particle.d,
+        };
+        particles.push(newParticle);
+      }
+    }
   }
+}
+
+function drawParticle(particle, i) {
+  let x = particle.x;
+  let y = particle.y;
+  let d = noise(frameCount / 200, i) * particle.d;
+  push();
+    translate(x, y);
+    rotate(frameCount / 10);
+    push();
+      scale(1, 0.1);
+      circle(0, 0, d);
+    pop();
+    scale(0.1, 1);
+    circle(0, 0, d);
+  pop();
+}
 </script>

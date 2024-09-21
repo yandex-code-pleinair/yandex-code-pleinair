@@ -44,7 +44,7 @@
     let endColor = colors[floor(random(colors.length))];
   
     // Interpolate color along the curve
-    for (let i = 0; i <= 1; i += 0.01) {
+    for (let i = 0; i <= 1; i += 0.2) {
       let interColor = lerpColor(startColor, endColor, i);
       stroke(interColor);
       let x = bezierPoint(startX, controlX1, controlX2, endX, i);
@@ -55,13 +55,12 @@
     translate(0, -len);
     
     if (len > 4) {
-      for (let i = 0; i < random(1, 3); i++) {
+      for (let i = 0; i < random(1, 6); i++) {
         push();
         rotate(random(-angle, angle));
         branch(len * random(0.6, 0.7));
         pop();
       }
     }
-  }
-  
+  }  
 </script>

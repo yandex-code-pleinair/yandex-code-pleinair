@@ -9,6 +9,7 @@ const MAX_FRAMES = 1000;
 function setup() {
     createCanvas(WIDTH, HEIGHT);
     randomSeed(21092024);
+    prepareGlechomaHederacea();
 }
 
 function draw() {
@@ -19,77 +20,50 @@ function draw() {
     }
 }
 
-function rectCoords(sx, sy, ex, ey) {
-    rect(sx, sy, ex - sx, ey - sy);
+const COLOR_TRUNK_1 = [51, 27, 10];
+const COLOR_TRUNK_2 = [38, 37, 7];
+const COLOR_LEAVES_1 = [145, 157, 122];
+const COLOR_LEAVES_2 = [47, 65, 30];
+const COLOR_FLOWERS_1 = [222, 201, 240];
+const COLOR_FLOWERS_2 = [98, 48, 120];
+const MAX_TREE_LENGTH = 1000;
+
+let tree = [];
+
+function prepareGlechomaHederacea() {
+    tree.push({
+        type: "trunk",
+        sx: WIDTH * 0.5,
+        sy: HEIGHT - 10,
+        ex: WIDTH * 0.5 + random() * 50 - 25,
+        ey: HEIGHT * 0.5,
+        weight: random() * 10 + 10,
+        color: random() > 0.5 ? COLOR_TRUNK_1 : COLOR_TRUNK_2,
+        frames: 100,
+        leaves: [],
+    });
 }
-
-function drawFillerStatic() {
-    background("white");
-    noStroke();
-
-    fill("#4E342E");
-    rect(WIDTH * 0.5 - 10, HEIGHT * 0.75, 20, HEIGHT * 0.25);
-
-    fill("#2E7D32");
-
-    triangle(
-        WIDTH * 0.25, HEIGHT * 0.75,
-        WIDTH * 0.5, HEIGHT * 0.25,
-        WIDTH * 0.75, HEIGHT * 0.75,
-    );
-}
-
-function drawFillerAnimated() {
-    background("white");
-    noStroke();
-
-    const trunkRatio = min(1, frameCount / 60);
-    const trunkY = HEIGHT - HEIGHT * 0.25 * trunkRatio;
-
-    fill("#4E342E");
-
-    rectCoords(
-        WIDTH * 0.5 - 10, trunkY,
-        WIDTH * 0.5 + 10, HEIGHT,
-    );
-
-    const leavesRatio = min(1, frameCount / 120);
-    fill("#2E7D32");
-
-    triangle(
-        WIDTH * 0.5 - WIDTH * 0.25 * leavesRatio, trunkY,
-        WIDTH * 0.5, trunkY - HEIGHT * 0.5 * leavesRatio,
-        WIDTH * 0.5 + WIDTH * 0.25 * leavesRatio, trunkY,
-    );
-}
-
-const colorTrunk1 = [51, 27, 10];
-const colorTrunk2 = [38, 37, 7];
-const colorLeaves1 = [145, 157, 122];
-const colorLeaves2 = [47, 65, 30];
-const colorFlowers1 = [222, 201, 240];
-const colorFlowers2 = [98, 48, 120];
-
-let tree = [{
-    type: "trunk",
-    sx: WIDTH * 0.5,
-    sy: HEIGHT - 10,
-    ex: WIDTH * 0.5,
-    ey: HEIGHT * 0.5,
-    weight: 20,
-    color: colorTrunk1,
-    frames: 100,
-    leaves: [],
-}];
-
-const MAX_TREE_LENGTH = 250;
 
 function drawGlechomaHederacea() {
     background("white");
     const thisTreeLength = tree.length;
 
     for (let i = 0; i < thisTreeLength; ++i) {
-        drawGlechomaHederaceaTree(tree[i]);
+        if (tree[i].type == "trunk") {
+            drawGlechomaHederaceaTree(tree[i]);
+        }
+    }
+
+    for (let i = 0; i < thisTreeLength; ++i) {
+        if (tree[i].type == "leaves") {
+            drawGlechomaHederaceaTree(tree[i]);
+        }
+    }
+
+    for (let i = 0; i < thisTreeLength; ++i) {
+        if (tree[i].type == "flower") {
+            drawGlechomaHederaceaTree(tree[i]);
+        }
     }
 }
 
@@ -107,9 +81,9 @@ function drawGlechomaHederaceaTree(node) {
             strokeWeight(node.weight);
             line(node.sx, node.sy, x, y);
 
-            if (node.weight > 1 && maxLength > 10 && tree.length < MAX_TREE_LENGTH && random() < ratio * 0.1) {
+            if (node.weight > 1 && maxLength > 10 && tree.length < MAX_TREE_LENGTH * 0.25 && random() < ratio * 0.2) {
                 const angle = random() * PI * 2;
-                const length = max(10, maxLength * random() * 0.5);
+                const length = max(25, (1 - ratio * 0.75) * maxLength * random());
 
                 tree.push({
                     type: "trunk",
@@ -117,8 +91,8 @@ function drawGlechomaHederaceaTree(node) {
                     sy: y,
                     ex: x + sin(angle) * length,
                     ey: y + cos(angle) * length,
-                    weight: node.weight - min(2, random() * 10),
-                    color: random() > 0.5 ? colorTrunk1 : colorTrunk2,
+                    weight: max(2, (1 - ratio) * node.weight),
+                    color: random() > 0.5 ? COLOR_TRUNK_1 : COLOR_TRUNK_2,
                     frames: max(50, node.frames - random() * 10),
                 });
             }
@@ -131,7 +105,7 @@ function drawGlechomaHederaceaTree(node) {
                     x: x + random() * offset - offset * 0.5,
                     y: y + random() * offset - offset * 0.5,
                     size: random() * 20 + 20,
-                    color: random() > 0.5 ? colorLeaves1 : colorLeaves2,
+                    color: random() > 0.5 ? COLOR_LEAVES_1 : COLOR_LEAVES_2,
                     frames: random() * 10 + 10,
                 });
             }
@@ -149,8 +123,8 @@ function drawGlechomaHederaceaTree(node) {
                     type: "flower",
                     x: node.x + random() * node.size - node.size * 0.5,
                     y: node.y + random() * node.size - node.size * 0.5,
-                    size: random() * 10 + 10,
-                    color: random() > 0.5 ? colorFlowers1 : colorFlowers2,
+                    size: random() * 5 + 5,
+                    color: random() > 0.5 ? COLOR_FLOWERS_1 : COLOR_FLOWERS_2,
                     frames: random() * 10 + 10,
                 });
             }

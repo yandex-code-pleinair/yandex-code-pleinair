@@ -9,7 +9,7 @@
     for (let i = 0; i < 1; i++) {
       const leaf = {
         x: width/2,
-        y: height,
+        y: height/1.5,
         vx: (random()-.5),
         vy: -1,
         d: 200
@@ -22,6 +22,15 @@
   function drawParticle(x, y, d) {
     push();
     translate(x, y);
+    scale(1, 0.5);
+    circle(0, 0, d);
+    pop();
+  }
+  
+  
+  function drawPetal(x, y, d) {
+    push();
+    translate(x, y);
     rotate(frameCount/10);
     scale(1, 0.5);
     circle(0, 0, d);
@@ -30,13 +39,13 @@
   
   function draw() {
     for (let leaf of leaves) {
-      stroke(75, 100 + 90 * random(), 80);
+      stroke(75, 100 + 100 * random(), 80);
       const x = leaf.x;
       const y = leaf.y;
       const d = map(noise(frameCount/20), 0, 1, leaf.d / 2, leaf.d);
       
       if (random()<.015) {
-        if (leaves.length < 100) {
+        if (leaves.length < 80) {
           leaf.d *= 0.6;
           const newLeaf = {
             x: leaf.x,
@@ -51,12 +60,12 @@
       
       leaf.x += leaf.vx;
       leaf.y += leaf.vy;
-      fill(75, 100 + 90 * random(), 80);
+      fill(75, 175, 80);
       drawParticle(x, y, d);
       
-      if (random() < .01) {
+      if (random() < 0.03) {
         fill(53 + 50 * random(), 58, 103 + 80*random());
-        drawParticle(x, y, 20);
+        drawPetal(x, y, 20);
       }
     }
   }

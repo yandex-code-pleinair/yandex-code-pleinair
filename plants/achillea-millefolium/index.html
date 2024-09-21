@@ -1,17 +1,89 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  const particles = [];
+function setup() {
+  createCanvas(450, 800);
+
+  for (let i = 0; i < 3; i++) {
+    const p = {
+      x: width / 2,
+      y: height - 10,
+      vx: random() - 0.5,
+      vy: -1,
+      d: 90,
+    };
+
+    particles.push(p);
   }
+}
 
-  function draw() {
-    background("white");
+function draw() {
+  fill(120, 85, 85, 50);
+  stroke(10, 10, 10, 100);
+  strokeWeight(2 * random());
+  const leafs = [];
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    const d = map(noise(frameCount / 20), 0, 1, p.d / 2, p.d);
 
-    circle(width / 2, height / 2, 200);
+    if (p.y < 200) {
+      leafs.push(p);
+      return;
+    }
+    if (random() < 0.03) {
+      if (particles.length < 90) {
+        const newP = {
+          x: p.x,
+          y: p.y,
+          vx: (random() - 0.5) * 3,
+          vy: -2,
+          d: p.d,
+        };
+        particles[i] = newP;
+      }
+    }
+    if (random() < 0.03) {
+      drawL(p.x, p.y, p.d);
+    }
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (random() < 0.05) {
+      fill(120, 85, 85, 50);
+      stroke(10, 10, 10, 40);
+    }
+
+    drawT(p.x, p.y, d);
+    for (let j = 0; j < 5; j++) {
+      drawL(p.x * random(), 900 - p.y, d);
+    }
   }
+}
+function drawL(x, y, d) {
+  if (y > 400) return;
+  fill(0, 245, 85, 50);
+  push();
+  translate(x, y);
+  rotate((frameCount / 120) * noise(d, x));
+  scale(1.3, 0.4);
+
+  circle(0, 0, d);
+  pop();
+  fill(120, 85, 85, 50);
+}
+
+function drawT(x, y, d) {
+  fill(120, 85, 85, 50);
+  push();
+  translate(x, y);
+  rotate((frameCount / 120) * noise(d, x));
+  scale(1.3, 0.4);
+
+  circle(0, 0, d);
+  pop();
+}
+
 </script>
