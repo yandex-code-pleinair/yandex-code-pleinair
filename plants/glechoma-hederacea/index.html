@@ -6,24 +6,24 @@ const WIDTH = 450;
 const HEIGHT = 800;
 const MAX_FRAMES = 1000;
 
-let frame = 0;
-
 function setup() {
     createCanvas(WIDTH, HEIGHT);
+    randomSeed(21092024);
 }
 
 function draw() {
-    ++frame;
+    drawGlechomaHederacea();
 
-    draw_2();
-
-    if (frame >= MAX_FRAMES) {
+    if (frameCount >= MAX_FRAMES) {
         noLoop();
     }
 }
 
-// compo filler
-function draw_1() {
+function rectCoords(sx, sy, ex, ey) {
+    rect(sx, sy, ex - sx, ey - sy);
+}
+
+function drawFillerStatic() {
     background("white");
     noStroke();
 
@@ -39,12 +39,11 @@ function draw_1() {
     );
 }
 
-// animated compo filler
-function draw_2() {
+function drawFillerAnimated() {
     background("white");
     noStroke();
 
-    const trunkRatio = min(1, frame / 60);
+    const trunkRatio = min(1, frameCount / 60);
     const trunkY = HEIGHT - HEIGHT * 0.25 * trunkRatio;
 
     fill("#4E342E");
@@ -54,7 +53,7 @@ function draw_2() {
         WIDTH * 0.5 + 10, HEIGHT,
     );
 
-    const leavesRatio = min(1, frame / 120);
+    const leavesRatio = min(1, frameCount / 120);
     fill("#2E7D32");
 
     triangle(
@@ -64,8 +63,112 @@ function draw_2() {
     );
 }
 
-function rectCoords(sx, sy, ex, ey) {
-    rect(sx, sy, ex - sx, ey - sy);
+const colorTrunk1 = [51, 27, 10];
+const colorTrunk2 = [38, 37, 7];
+const colorLeaves1 = [145, 157, 122];
+const colorLeaves2 = [47, 65, 30];
+const colorFlowers1 = [222, 201, 240];
+const colorFlowers2 = [98, 48, 120];
+
+let tree = [{
+    type: "trunk",
+    sx: WIDTH * 0.5,
+    sy: HEIGHT - 10,
+    ex: WIDTH * 0.5,
+    ey: HEIGHT * 0.5,
+    weight: 20,
+    color: colorTrunk1,
+    frames: 100,
+    leaves: [],
+}];
+
+const MAX_TREE_LENGTH = 250;
+
+function drawGlechomaHederacea() {
+    background("white");
+    const thisTreeLength = tree.length;
+
+    for (let i = 0; i < thisTreeLength; ++i) {
+        drawGlechomaHederaceaTree(tree[i]);
+    }
+}
+
+function drawGlechomaHederaceaTree(node) {
+    const frame = node.frame || 0;
+    const ratio = frame / node.frames;
+
+    switch (node.type) {
+        case "trunk": {
+            const x = node.sx + (node.ex - node.sx) * ratio;
+            const y = node.sy + (node.ey - node.sy) * ratio;
+            const maxLength = Math.sqrt((node.ex - node.sx) * (node.ex - node.sx) + (node.ey - node.sy) * (node.ey - node.sy));
+
+            stroke(...node.color);
+            strokeWeight(node.weight);
+            line(node.sx, node.sy, x, y);
+
+            if (node.weight > 1 && maxLength > 10 && tree.length < MAX_TREE_LENGTH && random() < ratio * 0.1) {
+                const angle = random() * PI * 2;
+                const length = max(10, maxLength * random() * 0.5);
+
+                tree.push({
+                    type: "trunk",
+                    sx: x,
+                    sy: y,
+                    ex: x + sin(angle) * length,
+                    ey: y + cos(angle) * length,
+                    weight: node.weight - min(2, random() * 10),
+                    color: random() > 0.5 ? colorTrunk1 : colorTrunk2,
+                    frames: max(50, node.frames - random() * 10),
+                });
+            }
+
+            if (tree.length < MAX_TREE_LENGTH && random() < ratio * 0.1) {
+                const offset = node.weight * 5;
+
+                tree.push({
+                    type: "leaves",
+                    x: x + random() * offset - offset * 0.5,
+                    y: y + random() * offset - offset * 0.5,
+                    size: random() * 20 + 20,
+                    color: random() > 0.5 ? colorLeaves1 : colorLeaves2,
+                    frames: random() * 10 + 10,
+                });
+            }
+
+            break;
+        }
+
+        case "leaves": {
+            noStroke();
+            fill(...node.color);
+            circle(node.x, node.y, node.size * ratio);
+
+            if (tree.length < MAX_TREE_LENGTH && random() < 0.05) {
+                tree.push({
+                    type: "flower",
+                    x: node.x + random() * node.size - node.size * 0.5,
+                    y: node.y + random() * node.size - node.size * 0.5,
+                    size: random() * 10 + 10,
+                    color: random() > 0.5 ? colorFlowers1 : colorFlowers2,
+                    frames: random() * 10 + 10,
+                });
+            }
+
+            break;
+        }
+
+        case "flower": {
+            noStroke();
+            fill(...node.color);
+            circle(node.x, node.y, node.size * ratio);
+            break;
+        }
+    }
+
+    if (frame < node.frames) {
+        node.frame = frame + 1;
+    }
 }
 
 </script>
