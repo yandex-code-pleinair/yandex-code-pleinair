@@ -1,17 +1,60 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background("white");
+  for (let i = 0; i < 1; i++) {
+    let particle = {
+      x: width / 2,
+      y: height / 2,
+      vx: random() * 0.1,
+      vy: -1,
+      d: 200,
+      type: "stem",
+    };
+    particles.push(particle);
   }
 
-  function draw() {
-    background("white");
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function draw() {
+  for (let i = 0; i < particles.length; i++) {
+    let particle = particles[i];
 
-    circle(width / 2, height / 2, 200);
+    let x = particle.x;
+    let y = particle.y;
+    let d = noise(frameCount / 50, i) * particle.d;
+    
+    if (particle.type == "stem") {
+      stroke("black");
+      if (d > 1) {
+        circle(x, y, d);    
+      }
+
+      // update
+      particle.y += particle.vy;
+      particle.x += particle.vx;
+
+      // split
+      if (random() < 0.1) {
+        particle.d = particle.d * 0.8;
+        if (particles.length < 100) {
+          let newParticle = {
+            x: particle.x,
+            y: particle.y,
+            vx: (random() - random()) * 2,
+            vy: particle.vy,
+            d: particle.d,
+            type: "stem",
+          };
+          particles.push(newParticle);
+        }
+      }
+    }
+
   }
+}
 </script>
