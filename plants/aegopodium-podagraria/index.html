@@ -1,17 +1,64 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<!-- Utils -->
+<script>
+  const getRandomStr = (length) => {
+    let result = "";
+    const characters = "YANDEXyandex#<>&*/|\\";
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+  };
+
+  function getRandomInt(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
+    const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180;
+
+    return {
+      x: centerX + radius * Math.cos(angleInRadians),
+      y: centerY + radius * Math.sin(angleInRadians),
+    };
+  };
+
+  const getRandomColor = () => {
+    const autumnColors = ["gold", "firebrick", "#982521", "#e45934", "#f4a93f"];
+    return autumnColors[Math.floor(Math.random() * autumnColors.length)];
+  };
+</script>
+
+<!-- Generation -->
 <script>
   function setup() {
     createCanvas(450, 800);
-  }
+    textSize(20);
 
-  function draw() {
-    background("white");
+    // Ствол
+    fill("black");
+    for (let i = 0; i < 60; i++) {
+      text(getRandomStr(random() * 6 + 4), 150, 450 + i * 6);
+    }
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    // Кусты
+    for (let j = 0; j < 500; j++) {
+      fill(getRandomColor());
 
-    circle(width / 2, height / 2, 200);
+      for (let i = 0; i < 150; i++) {
+        const coordinates = polarToCartesian(
+          getRandomInt(100, 300),
+          getRandomInt(100, 300),
+          50 + i * 2,
+          10 + i * 2
+        );
+        rotate(QUARTER_PI / 1.5);
+        text(getRandomStr(1), coordinates.x, coordinates.y);
+      }
+    }
   }
 </script>
