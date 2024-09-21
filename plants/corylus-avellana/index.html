@@ -1,17 +1,99 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+function setup() {
+  createCanvas(450, 800);
+  noLoop();
+  background("white");
+  drawTree(225, 600, 32);
+}
+
+function drawTree(x, y, size) {
+  const colors = {
+    wood: [color(101, 67, 33), color(81, 47, 13)],
+    leaf: [color(34, 139, 34), color(24, 129, 24)]
+  };
+  
+  // Ствол
+  for (let i = 0; i < 8; i++) drawBlock(x, y - i * size, ...colors.wood, "wood", size);
+  
+  // Листва
+  for (let layer = 0; layer < 7; layer++) {
+    const width = 5 - Math.floor(layer / 2);
+    for (let i = -width; i <= width; i++) {
+      for (let j = -width; j <= width; j++) {
+        if (random() > 0.3 || (abs(i) <= 1 && abs(j) <= 1)) {
+          const leafX = x + (i - 0.5) * size;
+          const leafY = y - (8 + layer) * size + j * size / 2;
+          if (dist(0, 0, i, j) <= width - 1 || random() > 0.5) {
+            drawBlock(leafX, leafY, ...colors.leaf, "leaf", size);
+          }
+        }
+      }
+    }
   }
+}
 
-  function draw() {
-    background("white");
+function drawBlock(x, y, mainColor, borderColor, type, size) {
+  push();
+  translate(x, y);
+  
+  // Основной цвет блока
+  fill(mainColor);
+  noStroke();
+  rect(0, 0, size, size);
+  
+  if (type === "wood") {
+    drawWoodTexture(size, mainColor, borderColor);
+  } else {
+    drawLeafTexture(size, mainColor, borderColor);
+  }
+  
+  // Рамка блока
+  noFill();
+  stroke(borderColor);
+  strokeWeight(2);
+  rect(0, 0, size, size);
+  
+  pop();
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function drawWoodTexture(size, mainColor, borderColor) {
+  // Текстура коры
+  for (let i = 0; i < 5; i++) {
+    let lineColor = lerpColor(mainColor, borderColor, random(0.2, 0.8));
+    stroke(lineColor);
+    strokeWeight(1);
+    let x1 = random(size);
+    let x2 = x1 + random(-5, 5);
+    x2 = constrain(x2, 0, size);
+    line(x1, 0, x2, size);
+  }
+  
+  // Узлы на коре
+  for (let i = 0; i < 2; i++) {
+    fill(borderColor);
+    noStroke();
+    let nodeSize = random(3, 6);
+    ellipse(random(nodeSize, size - nodeSize), random(nodeSize, size - nodeSize), nodeSize, nodeSize);
+  }
+}
 
-    circle(width / 2, height / 2, 200);
+function drawLeafTexture(size, mainColor, borderColor) {
+  // Прожилки
+  stroke(lerpColor(mainColor, borderColor, 0.5));
+  strokeWeight(1);
+  line(0, 0, size, size);
+  line(size, 0, 0, size);
+  
+  // Текстура листа
+  for (let i = 0; i < 10; i++) {
+    let leafColor = lerpColor(mainColor, color(0, 100, 0), random(0.1, 0.3));
+    fill(leafColor);
+    noStroke();
+    let dotSize = random(2, 4);
+    ellipse(random(dotSize, size - dotSize), random(dotSize, size - dotSize), dotSize, dotSize);
+  }
+}
   }
 </script>
