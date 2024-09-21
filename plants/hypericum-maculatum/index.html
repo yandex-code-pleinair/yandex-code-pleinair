@@ -2,16 +2,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+  createCanvas(450, 800, WEBGL);
+}
+
+function draw() {
+  background("white");
+  noStroke()
+  
+  pg = createGraphics(100, 100);
+  pg.background(101, 52, 16);
+  pg.noStroke();
+  for (var i = 0; i < 100; i++) {
+    pg.randomSeed(0)
+    pg.fill(255*random(), 255*random(), 255*random());
+    var x = random()*100;
+    var y = random()*100;
+    pg.circle(x, y, 10);
   }
+  rotateY(frameCount * 0.01);
+  texture(pg);
+  cylinder(50, 600, 24, 2, true, true);
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
 </script>
