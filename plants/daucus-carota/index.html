@@ -5,13 +5,41 @@
     createCanvas(450, 800);
   }
 
+  function drawPear() {
+    const x = width / 2 + random() * 400 - 200;
+    const y = width / 2 + random() * 400 - 100;
+    const d = 30 * random();
+
+    fill(200, 100, 0);
+    circle(x, y, d);
+    fill(220, 100, 0);
+    circle(x, y + d / 2, d + 10);
+  }
+
   function draw() {
     background("white");
+    randomSeed(0);
+    noStroke();
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    fill("brown");
+    for (let i = 0; i < 30; i++) {
+      const x = width / 2;
+      const y = height / 2 + height / 2 * random();
+      const w = 30;
+      const h = 10;
+      rect(x, y, w, h)
+    }
 
-    circle(width / 2, height / 2, 200);
+    for (let i = 0; i < 200; i++) {
+      fill(100 + 155 * random(), 100 + 155 * random(), 0, 200);
+      const x = width / 2 + random() * 400 - 200;
+      const y = width / 2 + random() * 400 - 100;
+      const d = 100 * random();
+      circle(x, y, d);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      drawPear();
+    }
   }
 </script>
