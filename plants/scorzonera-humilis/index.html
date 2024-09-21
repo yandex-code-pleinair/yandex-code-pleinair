@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+ function setup() {
+  createCanvas(450, 800);
+  
+}
+
+function draw() {
+  background("lightblue");
+  textSize(32);
+  fill('black');
+  text('Самое красивое дерево', 50, 400);
+  randomSeed(0);
+  noStroke();
+  
+  
+  
+  fill('white')
+  for (let i = 0; i < 30; i++) {
+    let x = width/2
+    let y = height/5 + height/5 * random()
+    let w = 30
+    let h = 50
+    rect(x, y, w, h)
+  }
+  
+  fill('black')
+  for (let i = 0; i < 150; i++) {
+    let x = width/2
+    let y = height/4* random() + height/5
+    let w = 30* random()
+    let h = 2* random()
+    rect(x, y, w, h)
   }
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  for (let i = 0; i < 400; i++) {
+    fill(100 , 190, 0, 100);
+    const x = width / 1.2 + random() * 30 - 150;
+    const y = height / 2 + random() * 40 - 300;
+    const d = 150 * random()
+    circle(x, y, d);
   }
+}
+
 </script>
