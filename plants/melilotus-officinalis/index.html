@@ -1,17 +1,91 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+let branches = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background("white");
+
+  // Начальные ветви (стебли)
+  let x = width / 2;
+  let y = height;
+  let angle = -PI / 2;
+  let length = 100;
+  branch(x, y, angle, length);
+
+  // Добавляем начальные частицы для листьев/цветов
+  for (let i = 0; i < 50; i++) {
+    let particle = {
+      x: width / 2,
+      y: height - length,
+      vx: random(-0.5, 0.5),
+      vy: random(-1, -0.5),
+      d: 10
+    };
+    particles.push(particle);
+  }
+}
+
+function branch(x, y, angle, length) {
+  let x2 = x + cos(angle) * length;
+  let y2 = y + sin(angle) * length;
+  stroke(0, 150, 0);
+  strokeWeight(length / 10);
+  line(x, y, x2, y2);
+  
+  if (length < 10) return;
+
+  let dAngle = random(-0.3, 0.3);
+  branch(x2, y2, angle + dAngle, length * random(0.7, 0.9));
+  branch(x2, y2, angle - dAngle, length * random(0.7, 0.9));
+  
+  // Добавляем ветви в массив
+  branches.push({ x: x2, y: y2, length: length });
+}
+
+function draw() {
+  if (frameCount > 1000) {
+    noLoop();  // Останавливаем анимацию на 1000 кадре
   }
 
-  function draw() {
-    background("white");
+  // Рисуем все частицы (листья и цветы)
+  for (let i = 0; i < particles.length; i++) {
+    let particle = particles[i];
+    drawParticle(particle, i);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    // Обновляем положение
+    particle.x += particle.vx;
+    particle.y += particle.vy;
 
-    circle(width / 2, height / 2, 200);
+    // Если частица улетает за границы, сбрасываем её
+    if (particle.y < 0 || particle.x < 0 || particle.x > width) {
+      particle.x = width / 2;
+      particle.y = height - 100;
+    }
   }
+
+  // Добавляем новые частицы к ветвям (новые листья)
+  if (frameCount % 30 == 0) {
+    for (let i = 0; i < branches.length; i++) {
+      let b = branches[i];
+      particles.push({
+        x: b.x,
+        y: b.y,
+        vx: random(-0.3, 0.3),
+        vy: random(-1, -0.5),
+        d: random(5, 15)
+      });
+    }
+  }
+}
+
+function drawParticle(particle, i) {
+  noStroke();
+  fill(100, 255, 100, 150);
+  let d = noise(frameCount / 50, i) * particle.d;
+  ellipse(particle.x, particle.y, d, d * 1.5);
+}
+
 </script>
