@@ -6,12 +6,32 @@
   }
 
   function draw() {
-    background("white");
+    background("aqua");
+    randomSeed(1);
+    
+    let n = 13, m = 7;
+    
+    let strokes = [];
+    for (let i = 0; i < m; i++)
+        strokes.push([random() * 256, random() * 256, random() * 256]);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    let visible = [];
+    for (let i = 0; i < n; i++) {
+      visible.push([]);
+      for (let j = 0; j < m; j++) {
+        visible[i].push(random() < 1.0 * i / n);
+      }
+    }
+    visible[0][3] = true;
+    
+    strokeWeight(5);
 
-    circle(width / 2, height / 2, 200);
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < m; j++) {
+        stroke(strokes[j][0], strokes[j][1], strokes[j][2]);
+        if (visible[n - 1 - i][j])
+          circle(60 * (j + 1), 60 * (i + 1), 20);
+      }
+    }
   }
 </script>
