@@ -19,9 +19,9 @@ function setup() {
 function draw() {
   if (currentFrame < frameCountLimit) {
     background(255, 250, 240);
-    translate(0, height / 2, 0);
     rotateX(PI / 6);
     rotateY(frameCount * 0.01);
+    translate(0, height / 4, 0);
     let windAngle = noise(windOffset) * PI / 16 - PI / 32;
     windOffset += 0.01;
     branch(150, 10, windAngle);
@@ -50,8 +50,9 @@ function branch(len, depth, windAngle) {
     strokeWeight(map(depth, 0, 10, 1, 5));
   }
 
-  line(0, 0, 0, 0, -len, 0);
-  translate(0, -len, 0);
+  let xOffset = map(depth, 0, 10, -3, 3);
+  line(xOffset, 0, 0, xOffset, -len, 0);
+  translate(xOffset, -len, 0);
   let newLen = len * 0.7;
   let dynamicAngle = angle + windAngle; 
   let fibAngle = fib[depth % fib.length] * 0.05; 
