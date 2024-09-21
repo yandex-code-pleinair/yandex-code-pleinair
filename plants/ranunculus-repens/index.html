@@ -7,32 +7,32 @@
 
 function draw() {
   background("white");
-  stroke('rgb(102,4,4)'); 
+  stroke('rgb(102,4,4)');
   strokeWeight(6);
-  translate(width / 2, height); 
-  drawBranch(200); 
+  translate(width / 2, height);
+  drawBranch(200);
 }
 
 function drawBranch(len) {
   if (len > 10) {
-    line(0, 0, 0, -len); 
-    translate(0, -len); 
+    line(0, 0, 0, -len);
+    translate(0, -len);
 
-    push(); 
-    rotate(random(0.1, 0.2)); 
-    drawBranch(len * 0.7); 
-    pop(); 
+    push();
+    rotate(random(0.1, 0.2));
+    drawBranch(len * 0.7);
+    pop();
 
- 
-    push(); 
-    rotate(-random(0.1, 0.3)); 
+
+    push();
+    rotate(-random(0.1, 0.3));
     drawBranch(len * 0.5);
-    pop(); 
+    pop();
   } else {
 
     strokeWeight(1);
-    fill('#ACB925'); 
-    ellipse(0, 0, 30, 50); 
+    fill('#ACB925');
+    ellipse(0, 0, 30, 50);
   }
 }
 </script>
