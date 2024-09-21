@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-let particles = [];
+  let particles = [];
 
 function setup() {
   createCanvas(450, 800);
@@ -22,10 +22,10 @@ function draw() {
   noFill();
   
   for (let i = 0; i < particles.length; i++) {
-    stroke(166 + noise(frameCount / 50, i) ** 10 * 1, 100 + 155 * random(10, 20), 81);
+    stroke(166 + 100 * random(), 115, 81 + 100 * random());
     strokeWeight(.1);
     
-    fill(100 + 155 * random(), 100 + 155 * random(), 0, 55);
+    fill(100 + 155 * random(), 100 + 155 * random(), 55);
     
     let particle = particles[i];
     let x = particle.x;
@@ -72,9 +72,9 @@ function drawList(x, y) {
   let diameter = random(5, 20);
   let h = random(150, 360);
   for (let d = diameter; d > 0; d -= 1) {
-    fill(h, 90, 90);
+    fill(h, 120 + random(10, 50), 50 + random(35, 88), 55 + random(10, 45));
     circle(x, y, d);
-    scale(1, 0.5);
+    scale(1, 0.3);
     h = (h + 1) % 360;
   }
 }
