@@ -3,15 +3,41 @@
 <script>
   function setup() {
     createCanvas(450, 800);
-  }
-
-  function draw() {
     background("white");
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+    const pointFrom = { x: randomInt(150, 300), y: randomInt(500, 600) };
+    const pointTo = { x: randomInt(150, 300), y: randomInt(500, 600) };
 
-    circle(width / 2, height / 2, 200);
+    drawStem(pointFrom, pointTo);
+    drawFlower({ x: pointTo.x, y: pointTo.y - 100 });
+  }
+
+  function drawStem(from, to) {
+    stroke(34, 139, 34);
+    strokeWeight(4);
+    noFill();
+
+    bezier(from.x, from.y + 50, from.x, from.y, to.x, to.y, to.x, to.y - 100);
+  }
+
+  function drawFlower(center) {
+    const petals = 5;
+    const petalLength = 30;
+
+    fill(255, 215, 0);
+    noStroke();
+    circle(center.x, center.y, 20);
+
+    for (let i = 0; i < petals; i++) {
+      let angle = TWO_PI / petals * i;
+      let petalX = center.x + cos(angle) * petalLength;
+      let petalY = center.y + sin(angle) * petalLength;
+
+      circle(petalX, petalY, 20);
+    }
+  }
+
+  function randomInt(min, max) {
+    return Math.floor(random(min, max + 1));
   }
 </script>
