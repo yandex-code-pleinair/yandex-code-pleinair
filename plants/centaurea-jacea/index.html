@@ -1,17 +1,96 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+function setup() {
+  createCanvas(450, 800)
+  angleMode(DEGREES)
+}
+
+function drawLeaf(x, y, rotateDeg) {
+  push()
+  
+  let r = 100 + 155 * random()
+  let g = 100 + 155 * random()
+  
+  fill(r, g, 0, 200)
+  
+  translate(x, y)
+  rotate(rotateDeg)
+  
+  circle(0 - 10, 0, 30)
+  circle(0 + 10, 0, 30)
+  
+  const rectWidth = 24
+  const rectHeight = 60
+  
+  rect(
+    0 - rectWidth / 2,
+    0,
+    rectWidth,
+    rectHeight,
+    20
+  )
+  
+  pop()
+}
+
+function drawApple(x, y) {
+  push()
+
+  const r = 100 + 155 * random()
+  const g = 0
+  const b = 50 * random()
+  
+  fill(r, g, b, 200)
+  
+  translate(x, y)
+  ellipse(0, 0, 20, 40)
+  
+  fill(255, 255, 255, 25)
+  circle(0, -10, 6)
+  
+  fill(255, 255, 255, 25)
+  ellipse(0, 5, 8, 16)
+  
+  pop()
+}
+
+function draw() {
+  background("white")
+  // 55
+  randomSeed(56)
+  noStroke()
+  
+  let centerX = 225
+  let centerY = 325
+  
+  fill(135, 62, 35, 200)
+  
+  const trunkWidth = 30
+  rect(centerX - trunkWidth / 2, centerY, trunkWidth, 300, 3)
+  
+  for (let i = 0; i < 100; i++) {
+    let randomXShift = random(-100, 101)
+    let randomYShift = random(-100, 101)
+    let randomDeg = 360 * random()
+    
+    drawLeaf(
+      centerX + randomXShift,
+      centerY + randomYShift,
+      randomDeg
+    )  
   }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  
+  randomSeed(61)
+  
+  for (let j = 0; j < 10; j++) {
+    randomXShift = random(-80, 81)
+    randomYShift = random(-80, 81)
+    
+    drawApple(
+      centerX + randomXShift,
+      centerY + randomYShift,
+    )
   }
+}
 </script>
