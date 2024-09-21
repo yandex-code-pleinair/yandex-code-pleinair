@@ -2,33 +2,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
 let alphaValues = [];
-let flowerPositions = [];
+let flowerPositions = []; // Объявляем массив здесь
 
 function setup() {
   createCanvas(450, 800);
   noStroke();
 
+  // Задаем фиксированные позиции для цветков
+  flowerPositions = [
+    { x: width / 2 - 100, y: height / 2 - 50 }, // Позиция первого цветка
+    { x: width / 2, y: height / 2 + 50 },        // Позиция второго цветка
+    { x: width / 2 + 100, y: height / 2 - 50 }  // Позиция третьего цветка
+  ];
+
+  // Генерация альфа-значений
   for (let i = 0; i < 3; i++) {
     alphaValues.push(random(100, 255));
-    
-    let x = width / 2 + random(-150, 150);
-    let y = height / 2 + random(-100, 100);
-    flowerPositions.push({x: x, y: y});
   }
 }
 
 function draw() {
   background(255);
 
-
   for (let i = 0; i < 3; i++) {
     let pos = flowerPositions[i];
-
 
     alphaValues[i] += random(-10, 10);
     alphaValues[i] = constrain(alphaValues[i], 100, 255);
     
-
     drawFlower(pos.x, pos.y, alphaValues[i]);
     drawStem(pos.x, pos.y + 80, 5);
   }
@@ -43,7 +44,6 @@ function drawFlower(x, y, alpha) {
   let petalRadius = 80;
   let centerRadius = 20;
 
-
   for (let i = 0; i < petalCount; i++) {
     let angle = TWO_PI / petalCount * i;
     drawPetal(angle, petalRadius, alpha);
@@ -55,7 +55,6 @@ function drawFlower(x, y, alpha) {
 
   pop();
 }
-
 
 function drawPetal(angle, petalRadius, alpha) {
   let petalLength = 120; // Длина лепестка
@@ -83,6 +82,16 @@ function drawPetal(angle, petalRadius, alpha) {
   bezierVertex(0, -subPetalLength / 2, -petalWidth / 4, -subPetalLength / 4, 0, 0);
   endShape(CLOSE);
   
+  // Третья часть лепестка
+  let sub2PetalLength = petalLength * 0.3;
+  fill(255, 110, 150, alpha);
+  
+  beginShape();
+  vertex(5, 0);
+  bezierVertex(petalWidth / 20, -sub2PetalLength / 4, petalWidth / 2, -sub2PetalLength / 2, petalWidth / 4, -sub2PetalLength);
+  bezierVertex(0, -sub2PetalLength / 2, -petalWidth / 4, -sub2PetalLength / 4, 0, 0);
+  endShape(CLOSE);
+  
   pop();
 }
 
@@ -100,5 +109,6 @@ function drawStem(x, y, thickness) {
   
   pop();
 }
+
 
 </script>
