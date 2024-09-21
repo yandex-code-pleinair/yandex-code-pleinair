@@ -2,16 +2,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+  createCanvas(450, 800);
+  
+  
+  // Ствол
+  background("white");
+
+  fill("#AD372E");
+  stvolWidth = 50
+  rect(width / 2 - stvolWidth / 2, height / 4, stvolWidth, 3 * height / 4)
+  
+  
+  // Крона
+  for (let i = 0; i < 3; i++) { // выведет 0, затем 1, затем 2
+   
   }
+  
+  fill("green");
+  stroke("#10990050");
+  strokeWeight(20);
 
-  function draw() {
-    background("white");
+  circle(width / 2, height / 4, 300);
+}
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function draw() {
 
-    circle(width / 2, height / 2, 200);
-  }
+}
 </script>
