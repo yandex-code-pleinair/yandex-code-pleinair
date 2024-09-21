@@ -80,7 +80,7 @@
 function setup() {
   createCanvas(450, 800);
   background('white')
-  for (let i = 0; i < 1400; i++) {
+  for (let i = 0; i < 800; i++) {
     let particle = {
       x: width / 2,
       y: height,
@@ -96,9 +96,17 @@ function draw() {
   strokeWeight(.3)
   randomSeed(0)
   for (let i = 0; i < particles.length; i++) {
-    stroke(random(50),random(120) + 130,100)
     let particle = particles[i];
-    let d = noise(frameCount/80,i) ** 10 * 50
+
+    if (particle.y < 300 && random() < 0.01) {
+      const x = particle.x
+      const y = particle.y
+      fill ('#6e03dd')
+      circle(x, y, 2)
+    }
+
+    stroke(random(50),random(140) + 110,100)
+    let d = noise(frameCount/80,i) ** 10 * 80
     circle(particle.x, particle.y, d);
     particle.x+=particle.vx
     particle.y+=particle.vy
