@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background('white')
+  for (let i = 0; i < 600; i++) {
+    let particle = {
+      x: width / 2,
+      y: height,
+      vx: random(-.1, .1),
+      vy: random(-1, 0),
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function draw() {
+  noFill()
+  strokeWeight(.1)
+  randomSeed(1)
+  for (let i = 0; i < particles.length; i++) {
+    stroke(random(256),200,random(256))
+    let particle = particles[i];
+    let d = noise(frameCount/5,i) ** 10 * 150
+    circle(particle.x, particle.y, d);
+    particle.x+=particle.vx
+    particle.y+=particle.vy
+    particle.vx+=map(Math.random(),0,1,-.01,.01)
   }
+}
 </script>
