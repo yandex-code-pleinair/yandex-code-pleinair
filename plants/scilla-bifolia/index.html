@@ -1,17 +1,109 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  let particles = []
+  // function setup() {
+  //   createCanvas(450, 800);
+  //   background("white");
+  //   for (let i = 0; i < 1; i++) {
+  //     let particle = {
+  //       x: width/2,
+  //       y:height,
+  //       vx: random(-.1, .1),
+  //       vy: random(-1, 0),
+  //       d: 100
+  //     }
+  //     particles.push(particle)
+  //   }
+
+  // }
+
+  // function draw() {
+  //   // randomSeed(0)
+
+  //   // noStroke()
+  //   noFill()
+  //   stroke(120, 85, 75)
+  //   for (let i = 0; i < particles.length; i++) {
+  //     const particle = particles[i]
+  //     const x = particle.x
+  //     const y = particle.y
+  //     const d = map(noise(frameCount/20), 0, 1, particle.d/2, particle.d)
+
+  //     if (random() < 0.01) {
+  //       fill ('pink')
+  //       circle(x, y, 20)
+  //     }
+
+  //     if (random() < 0.01) {
+  //       if (particles.length < 200) {
+  //         particle.d *= 0.6
+  //         const newParticle = {
+  //           x: particle.x,
+  //           y: particle.y,
+  //           vx: random() - 0.5,
+  //           vy: -1,
+  //           d: particle.d
+  //         }
+  //         particles.push(newParticle)
+  //       }
+  //     }
+
+  //     particle.x += particle.vx
+  //     particle.y += particle.vy
+  //     fill ('white')
+
+  //     circle(x, y, particle.d)
+  //   }
+  //   // stroke(0, 200, 0, 150);
+  //   // strokeWeight(100);
+
+  //   // fill('black')
+  //   // for (let i = 0; i < 20; i++) {
+  //   //   const x = width / 2
+  //   //   const y = height / 2 + height / 2 * random()
+  //   //   const w = 30
+  //   //   const h = 10
+  //   //   rect(x, y, w, h)
+  //   // }
+
+  //   // for (let i = 0; i < 400; i++) {
+  //   //   fill(100 + random() * 50, 155 + random() * 100, 0);
+  //   //   let x = width / 2 + random() * 400 - 200
+  //   //   let y = height / 4 + random() * 400 - 200
+  //   //   circle(x, y, 20 + random() * 10);
+  //   // }
+  // }
+
+//   let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  background('white')
+  for (let i = 0; i < 1400; i++) {
+    let particle = {
+      x: width / 2,
+      y: height,
+      vx: random(-.1, .1),
+      vy: random(-1, 0),
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+function draw() {
+  noFill()
+  strokeWeight(.3)
+  randomSeed(0)
+  for (let i = 0; i < particles.length; i++) {
+    stroke(random(50),random(120) + 130,100)
+    let particle = particles[i];
+    let d = noise(frameCount/80,i) ** 10 * 50
+    circle(particle.x, particle.y, d);
+    particle.x+=particle.vx
+    particle.y+=particle.vy
+    particle.vx+=map(Math.random(),0,1,-.01,.01)
   }
+}
+
 </script>

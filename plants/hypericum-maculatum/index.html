@@ -3,25 +3,42 @@
 <script>
   function setup() {
   createCanvas(450, 800, WEBGL);
+  leaves = createGraphics(450, 400);
+  leaves.background(255, 255, 255, 0);
+  leaves.randomSeed(0);
+  leaves.noStroke();
+  for (var i = 0; i < 400; i++) {
+    var shade = 255*random();
+    leaves.fill(0, shade, 0);
+    var x = random()*450;
+    var y = random()*400;
+    leaves.ellipse(x, y, 40, 10, 6);
+  }
 }
 
 function draw() {
   background("white");
   noStroke()
   
-  pg = createGraphics(100, 100);
-  pg.background(101, 52, 16);
-  pg.noStroke();
+  const h = 700;
+  trunk = createGraphics(h, h);
+  trunk.background(222, 222, 222);
+  trunk.randomSeed(0);
+  trunk.noStroke();
   for (var i = 0; i < 100; i++) {
-    pg.randomSeed(0)
-    pg.fill(255*random(), 255*random(), 255*random());
-    var x = random()*100;
-    var y = random()*100;
-    pg.circle(x, y, 10);
+    var shade = 255*random();
+    trunk.fill(shade, shade, shade);
+    var x = random()*h;
+    var y = random()*h;
+    trunk.ellipse(x, y, 80, 10, 6);
   }
+
   rotateY(frameCount * 0.01);
-  texture(pg);
-  cylinder(50, 600, 24, 2, true, true);
+  texture(trunk);
+  cylinder(30, h, 24, 2, true, true);
+
+  texture(leaves);
+  rect(-225, -400, 450, 400);
 }
 
 </script>

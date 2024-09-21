@@ -2,16 +2,64 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
-  }
+  createCanvas(450, 800);
+  randomSeed(0);
+  background("white");
+  noLoop();
+  drawGigerTree(width / 2, height - 50, -PI / 2, 50, 7); // Start the tree drawing
+}
 
-  function draw() {
-    background("white");
+// function draw() {
+//   
+// }
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
 
-    circle(width / 2, height / 2, 200);
-  }
+function drawGigerTree(x, y, angle, length, depth) {
+    if (length < 4 || depth <= 0) return;
+
+    const xEnd = x + cos(angle) * length;
+    const yEnd = y + sin(angle) * length;
+
+    if (depth > 3) {
+      const r = random() * 100;
+      stroke(50 + r, 0 + r, 0);
+    } else {
+      stroke(50, 100 + random() * 100, 50);
+    }
+    strokeWeight(length / 5 );
+    beginShape();
+    let variation = random(-5, 5); // Introduce some variability
+    for (let i = 0; i < 20; i++) {
+        let inter = map(i, 0, 30, 0, 2);
+        let xBranch = lerp(x, xEnd, inter) + random(-variation, variation); 
+        let yBranch = lerp(y + 15, yEnd, inter) + random(-variation, variation);
+        vertex(xBranch, yBranch);
+    }
+    endShape();
+
+    const vars = getRandomArbitrary(2,5);
+    length *= random(0.8, 0.9);
+  
+    for (let i = 0; i <= vars; i++) {
+      const t = getRandomArbitrary(-1,2);
+      
+      let angleVariation = random(PI / 8, PI / 3);
+      drawGigerTree(xEnd, yEnd, angle + t * angleVariation, length, depth - 1);
+    }
+
+    // Draw mechanical segments or shapes on larger branches
+    if (depth == 1 && getRandomArbitrary(0,2) === 1) {
+        drawMechanicalSegment(xEnd, yEnd);
+    }
+}
+
+function drawMechanicalSegment(x, y) {
+    fill(100 + random() * 100, 50, 0);
+    noStroke();
+    ellipse(x, y, random(5, 20)); // Draw a mechanical component
+}
+  
 </script>

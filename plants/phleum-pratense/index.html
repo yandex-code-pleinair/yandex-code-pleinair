@@ -2,7 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+    createCanvas(450, 800); // Увеличиваем высоту холста для большего дерева
     angleMode(DEGREES);
   }
 
@@ -10,19 +10,19 @@
     background("white");
 
     translate(width / 2, height); // Начнем снизу по центру холста
-    drawBranch(100); // Начало рисования дерева
+    drawBranch(150); // Начало рисования дерева
   }
 
   function drawBranch(len) {
-    // Устанавливаем случайный цвет для каждой ветви
+    // Устанавливаем случайный цвет для каждой части ствола и ветвей
     let r = random(120, 160);
     let g = random(70, 90);
     let b = random(90, 130);
-    fill(r, g, b);
-    stroke(r - 20, g - 20, b - 20);
+    fill(r, g, b, random(150, 255)); // Добавим прозрачности
+    stroke(r - 20, g - 20, b - 20, random(150, 255));
     strokeWeight(2);
 
-    // Выбираем случайную фигуру для каждой части ствола
+    // Случайная форма для каждой части ствола
     let shapeType = floor(random(3));
     push();
     rotate(random(-15, 15)); // Случайный угол поворота
@@ -35,20 +35,53 @@
     }
     pop();
 
-    // Ветвление, если длина ветви больше 10
-    if (len > 10) {
+    // Ветвление, если длина ветви больше 5
+    if (len > 5) {
       push();
       translate(0, -len); // Перемещаемся в конец текущей ветви
-      rotate(random(-30, -10)); // Левая ветвь
-      drawBranch(len * 0.7);
+      rotate(random(-35, -15)); // Левая ветвь
+      drawBranch(len * 0.75); // Меньшая ветвь
       pop();
 
       push();
       translate(0, -len);
-      rotate(random(10, 30)); // Правая ветвь
-      drawBranch(len * 0.7);
+      rotate(random(15, 35)); // Правая ветвь
+      drawBranch(len * 0.75); // Меньшая ветвь
       pop();
+
+      // Рисуем цветок в конце ветки
+      if (random(1) > 0.6) {
+        drawFlower(0, -len); // Цветы появляются в конце ветви
+      }
+
+      // Дополнительное ветвление для большей детализации
+      if (random(1) > 0.8) {
+        push();
+        translate(0, -len);
+        rotate(random(-10, 10)); // Средняя ветвь
+        drawBranch(len * 0.5); // Самая маленькая ветвь
+        pop();
+      }
     }
+  }
+
+  // Функция для рисования цветка с 5 лепестками и центром
+  function drawFlower(x, y) {
+    noStroke();
+
+    // Рисуем 5 лепестков
+    for (let i = 0; i < 5; i++) {
+      let angle = 360 / 5 * i;
+      let petalX = x + cos(angle) * 15;
+      let petalY = y + sin(angle) * 15;
+
+      fill('LightPink');
+      ellipse(petalX, petalY, 15, 20); // Лепестки
+    }
+
+    // Центр цветка
+    fill('PaleVioletRed');
+    ellipse(x, y, 10, 10); // Центральная точка
   }
 </script>
 

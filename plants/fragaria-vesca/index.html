@@ -1,17 +1,86 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let growth = 0; // Переменная для контроля роста
+let maxGrowth = 1000; // Максимум роста (кадров)
+
+function setup() {
+  createCanvas(450, 800);
+  frameRate(60); // 60 FPS для анимации роста
+}
+
+function draw() {
+  background(255); // Белый фон
+
+  // Рост стебля
+  let stemGrowth = map(growth, 0, maxGrowth, 0, 1); // Соотношение роста стебля
+  stroke(120, 80, 60); // Коричневый цвет для стебля
+  strokeWeight(4);
+  noFill();
+  bezier(width / 2, height / 2 - 250, width / 2 - 30 * stemGrowth, height / 2 - 200 * stemGrowth, width / 2 + 30 * stemGrowth, height / 2 - 150 * stemGrowth, width / 2, height / 2 - 120 * stemGrowth);
+
+  // Рост ягоды
+  let berryGrowth = map(growth, 0, maxGrowth, 0, 1); // Соотношение роста ягоды
+  fill(220, 30, 30); // Ярко-красная ягода
+  noStroke();
+  ellipse(width / 2, height / 2 - 20, 180 * berryGrowth, 200 * berryGrowth); // Круглая ягода растет
+
+  // Листья (5 штук)
+  let leafGrowth = map(growth, 0, maxGrowth, 0, 1); // Соотношение роста листьев
+  stroke(40, 140, 40);
+  strokeWeight(2);
+  fill(50, 160, 50); // Зеленый цвет
+
+  // Левый лист
+  beginShape();
+  vertex(width / 2, height / 2 - 120);
+  bezierVertex(width / 2 - 50 * leafGrowth, height / 2 - 160 * leafGrowth, width / 2 - 90 * leafGrowth, height / 2 - 160 * leafGrowth, width / 2 - 100 * leafGrowth, height / 2 - 130 * leafGrowth);
+  bezierVertex(width / 2 - 90 * leafGrowth, height / 2 - 100 * leafGrowth, width / 2 - 60 * leafGrowth, height / 2 - 100 * leafGrowth, width / 2, height / 2 - 120);
+  endShape(CLOSE);
+
+  // Правый лист
+  beginShape();
+  vertex(width / 2, height / 2 - 120);
+  bezierVertex(width / 2 + 50 * leafGrowth, height / 2 - 160 * leafGrowth, width / 2 + 90 * leafGrowth, height / 2 - 160 * leafGrowth, width / 2 + 100 * leafGrowth, height / 2 - 130 * leafGrowth);
+  bezierVertex(width / 2 + 90 * leafGrowth, height / 2 - 100 * leafGrowth, width / 2 + 60 * leafGrowth, height / 2 - 100 * leafGrowth, width / 2, height / 2 - 120);
+  endShape(CLOSE);
+
+  // Левый дополнительный лист
+  beginShape();
+  vertex(width / 2, height / 2 - 120);
+  bezierVertex(width / 2 - 70 * leafGrowth, height / 2 - 140 * leafGrowth, width / 2 - 110 * leafGrowth, height / 2 - 140 * leafGrowth, width / 2 - 120 * leafGrowth, height / 2 - 100 * leafGrowth);
+  bezierVertex(width / 2 - 110 * leafGrowth, height / 2 - 70 * leafGrowth, width / 2 - 80 * leafGrowth, height / 2 - 90 * leafGrowth, width / 2, height / 2 - 120);
+  endShape(CLOSE);
+
+  // Правый дополнительный лист
+  beginShape();
+  vertex(width / 2, height / 2 - 120);
+  bezierVertex(width / 2 + 70 * leafGrowth, height / 2 - 140 * leafGrowth, width / 2 + 110 * leafGrowth, height / 2 - 140 * leafGrowth, width / 2 + 120 * leafGrowth, height / 2 - 100 * leafGrowth);
+  bezierVertex(width / 2 + 110 * leafGrowth, height / 2 - 70 * leafGrowth, width / 2 + 80 * leafGrowth, height / 2 - 90 * leafGrowth, width / 2, height / 2 - 120);
+  endShape(CLOSE);
+
+  // Рисуем семена на ягоде равномерно
+  let seedGrowth = map(growth, 0, maxGrowth, 0, 1); // Соотношение появления семян
+  fill(255, 215, 0); // Желтые семена
+  noStroke();
+  let seedCount = 20;
+  for (let i = 0; i < seedCount; i++) {
+    let angle = TWO_PI / seedCount * i;
+    let radiusX = 70 * seedGrowth;
+    let radiusY = 100 * seedGrowth;
+    let x = width / 2 + cos(angle) * radiusX;
+    let y = height / 2 - 20 + sin(angle) * radiusY; // Смещение центра ягоды
+    ellipse(x, y, 10, 5); // Овальные семена
   }
 
-  function draw() {
-    background("white");
+  // Увеличиваем счетчик роста
+  growth++;
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  // Остановка анимации после достижения максимума
+  if (growth > maxGrowth) {
+    noLoop();
+  }
+}
+cle(width / 2, height / 2, 200);
   }
 </script>
