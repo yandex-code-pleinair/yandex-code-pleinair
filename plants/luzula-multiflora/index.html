@@ -10,28 +10,6 @@
       }
     }
 
-    function rotateMatrix(matrix, angle) {
-      const newMatrix = [];
-      for (let i = 0; i < 45; i++) {
-        newMatrix.push([]);
-        for (let j = 0; j < 80; j++) {
-          newMatrix[i].push({
-            r: 255,
-            g: 255,
-            b: 255,
-          });
-        }
-      }
-
-      // for(let i = 0; i < 45; i++) {
-      //   for(let j = 0; j < 45; j++) {
-      //     const newI = i 
-      //   }
-      // }
-
-      return matrix;
-    }
-
   function setup() {
     createCanvas(450, 800);
   }
@@ -39,24 +17,22 @@
     function drawTree() {
       let matrix = [];
 
-      for (let i = 0; i < 45; i++) {
-        matrix.push([]);
-        for (let j = 0; j < 80; j++) {
-          matrix[i].push({
-            r: 255,
-            g: 255,
-            b: 255,
-          });
-        }
+    for (let i = 0; i < 45; i++) {
+      matrix.push([]);
+      for (let j = 0; j < 80; j++) {
+        matrix[i].push({
+          r: 255,
+          g: 255,
+          b: 255,
+        });
       }
-
-      drawStvol(matrix);
-      drawLeaves(matrix);
-
-      matrix = rotateMatrix(matrix, 0.52);
-
-      return matrix;
     }
+
+    drawStvol(matrix);
+    drawLeaves(matrix);
+
+    return matrix;
+  }
 
     function drawStvol(matrix) {
       for (let i = 19; i < 25; i++) {
@@ -69,10 +45,11 @@
     function drawLeaves(matrix) {
       for (let i = 5; i < 41; i++) {
         for (let j = 40; j < 80; j++) {
-          matrix[i][j] = { r: 196, g: 215, b: 178 };
-        }
+        const colorShift = 50 * (random() - 0.5);
+        matrix[i][j] = { r: 150 + colorShift * 3, g: 205 + colorShift, b: 140 + colorShift };
       }
     }
+  }
 
   function draw() {
     background("white");
@@ -80,5 +57,4 @@
 
     drawMatrix(treeMatrix);
   }
-
 </script>
