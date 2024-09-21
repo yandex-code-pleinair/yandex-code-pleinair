@@ -2,91 +2,179 @@
 <title>daucus-carota</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  let particles = [];
-  const MAIN_COLOR = [40, 100, 0];
-  const SECOND_COLOR = [255, 185, 43];
+  // Анимированная морковка с глазами, усами, цветочками и листьями
 
-  // Функция инициализации
+  let eyeOffsetY = 0;
+  let mustacheAngle = 0;
+  let flowerSway = 0;
+
+  let carrotX, carrotY;
+
   function setup() {
-    createCanvas(450, 800);  // Создаем холст размером 450x800 пикселей
-    frameRate(20);  // Устанавливаем 30 кадров в секунду
-    background("white");  // Устанавливаем белый фон
+    createCanvas(400, 600);
+    angleMode(DEGREES); // Используем градусы для углов
 
-    // Создаем начальную частицу
-    const speedX = random() - 0.5;
-    const speedY = -2;
-    const firstSize = 200
-    createParticle(width / 2, height, speedX, speedY, firstSize);
+    carrotX = width / 2;
+    carrotY = height / 2 + 50;
   }
 
-  // Основная функция отрисовки
   function draw() {
-    stroke(...MAIN_COLOR);  // Устанавливаем цвет обводки
+    background(220);
 
-    // Проходим через каждую частицу
-    particles.forEach((particle) => {
-      updateParticle(particle);  // Обновляем параметры частицы
-      renderParticle(particle);  // Отображаем частицу на холсте
-      splitParticle(particle);  // Проверяем, нужно ли разделить частицу
-    });
+    // Переменные для анимации
+    let time = frameCount;
+
+    // Движение глаз
+    eyeOffsetY = sin(time * 2) * 2;
+
+    // Покачивание усов
+    mustacheAngle = sin(time) * 5;
+
+    // Покачивание цветов
+    flowerSway = sin(time * 1.5) * 5;
+
+    // Рисуем тело морковки
+    drawCarrotBody();
+
+    // Рисуем глаза
+    drawEyes();
+
+    // Рисуем усы
+    drawMustache();
+
+    // Рисуем листья
+    drawLeaves();
+
+    // Рисуем цветы
+    drawFlowers();
   }
 
-  // Функция для создания новой частицы
-  function createParticle(x, y, vx, vy, size) {
-    let particle = {
-      x,          // Положение по x
-      y,          // Положение по y
-      vx,        // Скорость по x
-      vy,        // Скорость по y
-      size     // Начальный диаметр частицы
-    };
-    particles.push(particle);  // Добавляем частицу в массив
-  }
+  function drawCarrotBody() {
+    push();
+    translate(carrotX, carrotY);
 
-  // Функция для обновления координат частицы
-  function updateParticle(particle) {
-    particle.x += particle.vx;  // Обновляем позицию по x
-    particle.y += particle.vy;  // Обновляем позицию по y
-  }
+    // Основная форма морковки
+    fill(255, 165, 0); // Оранжевый цвет
+    noStroke();
+    beginShape();
+    vertex(-50, -150);
+    bezierVertex(-70, 0, -30, 150, 0, 200);
+    bezierVertex(30, 150, 70, 0, 50, -150);
+    endShape(CLOSE);
 
-  // Функция для отображения частицы
-  function renderParticle(particle) {
-    const d = map(noise(frameCount / 20), 0, 1, particle.size / 2, particle.size);  // Изменяем размер на основе шума
-
-    // Иногда (с вероятностью 1%) рисуем розовый круг поверх частицы
-    if (random() < 0.01) {
-      fill(...SECOND_COLOR);
-      circle(particle.x, particle.y, 20);
+    // Горизонтальные линии для текстуры
+    stroke(230, 120, 0); // Более темный оранжевый
+    for (let y = -140; y <= 180; y += 10) {
+      line(-50, y, 50, y);
     }
 
-    // Основной круг частицы
-    fill("white");
-    drawParticle(particle.x, particle.y, d);
+    pop();
   }
 
-  function drawParticle(x, y, d) {
-    push()
-    translate(x, y);
-    rotate(frameCount / 10 * noise());
-    scale(1, 0.5);
-    circle(0, 0, d);
-    pop()
+  function drawEyes() {
+    push();
+    translate(carrotX, carrotY - 80 + eyeOffsetY);
+
+    // Левый глаз
+    fill(255);
+    stroke(0);
+    ellipse(-20, 0, 20, 30);
+    fill(0);
+    ellipse(-20, 5, 10, 15);
+
+    // Правый глаз
+    fill(255);
+    stroke(0);
+    ellipse(20, 0, 20, 30);
+    fill(0);
+    ellipse(20, 5, 10, 15);
+
+    pop();
   }
 
-  // Функция для разделения частицы с вероятностью
-  function splitParticle(particle) {
-    // С вероятностью 3% создаем новую частицу, пока их не станет 100
-    if (random() < 0.03 && particles.length < 100) {
-      particle.size *= 0.6;  // Уменьшаем размер исходной частицы
+  function drawMustache() {
+    push();
+    translate(carrotX, carrotY - 30);
+    rotate(mustacheAngle);
 
-      // Создаем новую частицу на основе старой
-      createParticle(
-        particle.x,
-        particle.y,
-        (random() - 0.5) * 5,  // Новая случайная скорость по x
-        -2,                    // Скорость по y
-        particle.size          // Размер новой частицы
-      );
+    // Левый ус
+    stroke(0);
+    strokeWeight(8);
+    noFill();
+    beginShape();
+    vertex(-30, 0);
+    bezierVertex(-50, -10, -60, -30, -70, -10);
+    bezierVertex(-80, 10, -90, 30, -100, 0);
+    endShape();
+
+    // Правый ус
+    beginShape();
+    vertex(30, 0);
+    bezierVertex(50, -10, 60, -30, 70, -10);
+    bezierVertex(80, 10, 90, 30, 100, 0);
+    endShape();
+
+    pop();
+  }
+
+  function drawLeaves() {
+    push();
+    translate(carrotX, carrotY - 150);
+
+    fill(34, 139, 34); // Зеленый цвет
+    noStroke();
+
+    // Рисуем несколько листьев
+    for (let i = -30; i <= 30; i += 15) {
+      push();
+      rotate(i);
+      ellipse(0, -15, 15, 50);
+      pop();
     }
+
+    pop();
+  }
+
+  function drawFlowers() {
+    push();
+    translate(carrotX, carrotY - 150);
+
+    // Левый цветок
+    push();
+    translate(-25, -40);
+    rotate(flowerSway);
+    drawFlower();
+    pop();
+
+    // Центральный цветок
+    push();
+    translate(0, -45);
+    rotate(flowerSway);
+    drawFlower();
+    pop();
+
+    // Правый цветок
+    push();
+    translate(25, -40);
+    rotate(flowerSway);
+    drawFlower();
+    pop();
+
+    pop();
+  }
+
+  function drawFlower() {
+    fill(255); // Белые лепестки
+    stroke(0);
+    for (let angle = 0; angle < 360; angle += 45) {
+      push();
+      rotate(angle);
+      ellipse(0, 10, 10, 20);
+      pop();
+    }
+
+    // Серединка цветка
+    fill(255, 215, 0); // Желтый цвет
+    ellipse(0, 0, 10, 10);
   }
 </script>
