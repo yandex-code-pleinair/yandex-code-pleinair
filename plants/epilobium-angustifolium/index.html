@@ -2,16 +2,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
+  createCanvas(450, 800);
+  
+  
+  // Ствол
+  background("white");
+
+  fill("#AD372E");
+  stvolWidth = 50
+  rect(width / 2 - stvolWidth / 2, height / 4, stvolWidth, 3 * height / 4)
+  
+  
+  // Крона
+  
+  fill(0 , 128, 0);
+  strokeWeight(20);
+  stroke("#10990050");
+
+  
+  let croneCenterX = (width / 2)
+  let croneCenterY = (height / 4)
+  circle(croneCenterX, croneCenterY, 300);
+  
+  
+  for (let i = 0; i < 100; i++) { // выведет 0, затем 1, затем 2
+    fill(0 , 128 + (random(60) - 30), 0);
+    
+    noStroke()
+    let angle = radians(random(360)); // convert to radians
+    let radius = random(0, 190); // random radius between 150 and 250
+    let x = croneCenterX + cos(angle) * radius;
+    let y = croneCenterY + sin(angle) * radius;
+    
+    circle(x, y, random(20,50));
   }
+  
+  // Земля
+  fill("#964B00");
+  rect(0, height - 50, width, 50);
+  
+}
 
-  function draw() {
-    background("white");
+function draw() {
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+}
 
-    circle(width / 2, height / 2, 200);
-  }
 </script>
