@@ -2,16 +2,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
   function setup() {
-    createCanvas(450, 800);
-  }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
-  }
+  createCanvas(450, 800);
+}
+const side = 100;
+const angle = Math.PI/3;
+const shift = (h) => h*Math.cos(angle);
+const verts = (h) => h*Math.sin(angle);
+function draw() {
+  background("white");
+  randomSeed(0);
+  noStroke()
+  const woodW = side/7.31;
+  const woodH = side/1.5;
+  recDrawDark(1, side*0.8, width/2, height/2 - verts(side)/2 + woodH);
+  fill("#7B3F00");
+  rect(width/2 - woodW/2, height/2 - verts(side)/2, woodW, woodH, 10);
+  recDraw(1, side, width/2, height/2 - verts(side));
+}
+function recDraw(l, side, x, y) {
+  fill(0, l*25, 0);
+  triangle(x, y, x - shift(side), y + verts(side), x + shift(side), y + verts(side))
+  if (l >= 4) return;
+  recDraw(l+1, side/2, x, y);
+  recDraw(l+1, side/2, x - shift(side/2), y + verts(side/2));
+}
+function recDrawDark(l, side, x, y) {
+   fill(l*10, l*10, l*10, l*20);
+   ellipse(x, y, side, side/4);
+   if (l >= 6) return;
+   recDrawDark(l + 1, side*0.6, x, y);
+}
 </script>
