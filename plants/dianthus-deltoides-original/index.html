@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<script>
+var bgcolor = ("lightblue");
+
+function setup() {
+  createCanvas(600, 600);
+}
+
+function draw() {
+  background(bgcolor);
+  flower();
+  ground();
+}
+
+function ground() {
+  noStroke();
+  fill(170, 150, 146, 240);
+  rect(0, 530, 600, 530);
+}
+
+function flower() {
+  for (let i = 0; i < 10; i++) {
+    if (frameCount <= 600) {
+      line(400, 550, 400, 400 + frameCount / 10);
+    }
+    if (frameCount > 600) {
+      line(400, 550, 400, 460);
+    }
+  }
+
+  push();
+  fill("yellow");
+  translate(300, 300);
+  noStroke();
+  rotate(radians(frameCount / 2));
+  for (let i = 0; i < 10; i++) {
+    if (frameCount <= 600) {
+      ellipse(0, 10 + frameCount / 20, 10 + frameCount / 40, 20 + frameCount / 20);
+    }
+    if (frameCount > 600) {
+      ellipse(0, 40, 25, 50);
+    }
+    rotate(PI / 5);
+  }
+  pop();
+}
+
+</script>
