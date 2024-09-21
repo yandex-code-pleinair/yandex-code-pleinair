@@ -1,17 +1,82 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+let particles = [];
+
+function setup() {
+  createCanvas(450, 800);
+  gradientFilter();
+  for (let i = 0; i < 1; i++) {
+    let particle = {
+      x: width / 2,
+      y: height,
+      vx: random() - 0.5,
+      vy: -1,
+      d: 200,
+    };
+    particles.push(particle);
   }
+}
 
-  function draw() {
-    background("white");
+function draw() {
+  noFill();
+  
+  for (let i = 0; i < particles.length; i++) {
+    stroke(166 + noise(frameCount / 50, i) ** 10 * 1, 100 + 155 * random(10, 20), 81);
+    strokeWeight(.1);
+    
+    fill(100 + 155 * random(), 100 + 155 * random(), 0, 55);
+    
+    let particle = particles[i];
+    let x = particle.x;
+    let y = particle.y;
+    let d = noise(frameCount / 50, i) * particle.d;
+    circle(x, y, d);
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+    // update
+    particle.y += particle.vy;
+    particle.x += particle.vx;
+    
+    if (random() < 0.01) {
+      drawList(x, y);
+    }
+    // split
+    if (random() < 0.02) {
+      particle.d = particle.d * 0.6;
+      if (particles.length < 100) {
+        let newParticle = {
+          x: particle.x,
+          y: particle.y,
+          vx: (random() - random()) * 2,
+          vy: particle.vy,
+          d: particle.d,
+        };
+        particles.push(newParticle);
+      }
+    }
   }
+}
+
+function gradientFilter() {
+  let startColor = color(120, 5, 100);
+  let endColor = color(60, 100, 50);
+  for (let y = 0; y < height; y += 1) {
+    let amt = map(y, 0, height, 0, 1);
+    let gradColor = lerpColor(startColor, endColor, amt);
+    stroke(gradColor);
+    line(0, y, width, y);
+  }
+}
+
+function drawList(x, y) {
+  let diameter = random(5, 20);
+  let h = random(150, 360);
+  for (let d = diameter; d > 0; d -= 1) {
+    fill(h, 90, 90);
+    circle(x, y, d);
+    scale(1, 0.5);
+    h = (h + 1) % 360;
+  }
+}
+
 </script>
