@@ -1,17 +1,70 @@
 <!DOCTYPE html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 <script>
-  function setup() {
-    createCanvas(450, 800);
+  let particles = [];
+let particles_ = [];
+let n = 1000;
+let frame_count = 0;
+
+function setup() {
+  createCanvas(450, 800);
+  background('black')
+  
+  for (let i = 0; i < n / 2; i++) {
+    let particle = {
+      x: width / 2,
+      y: height / 2,
+      vx: random(-.1, .1),
+      vy: (i < n / 2) ? random(-1, 0) : 0,
+    };
+    particles.push(particle);
   }
-
-  function draw() {
-    background("white");
-
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
-
-    circle(width / 2, height / 2, 200);
+  
+  for (let i = 0; i < n / 2; i++) {
+    particles_.push({
+      x: width / 2 + random(-1, 1) * noise(frameCount/80, i),
+      y: height + random(-1, 1) * noise(frameCount/80, i),
+      vx: random(-.1, .1),
+      vy: 10
+    });
   }
+}
+
+function draw() {
+  // noFill()
+  fill('green')
+  strokeWeight(.1)
+  randomSeed(0)
+  
+  if (frame_count > 40){
+      if (frame_count < 1000){
+    for (let i = 0; i < particles.length; i++) {
+      stroke(random(256), random(256), 128)
+      let particle = particles[i];
+      let d = noise(frameCount/80,i) ** 10 * 150
+      circle(particle.x, particle.y, d);
+      particle.x += particle.vx
+      particle.y += particle.vy
+      
+      particle.vx += map(Math.random(), 0,1, -0.01, 0.01)
+      // particle.vy += map(Math.random(), 0,1, -0.01, 0.01)
+      }
+    }
+  } else {
+    noFill()
+    for (let i = 0; i < particles_.length; i++) {
+        stroke(random(256), random(256), 128)
+        let particle = particles_[i];
+        // let d = noise(frameCount/80, i) ** 10 * 150
+        let d = random(8, 16, 32, 64);
+      
+        circle(particle.x, particle.y, d);
+        particle.x += particle.vx
+        particle.y -= particle.vy
+        particle.vx += map(Math.random(), 0,1, -0.01, 0.01)
+        // particle.vy += map(Math.random(), 0,1, -0.01, 0.01)
+    }
+  }
+  frame_count += 1;
+}
 </script>
