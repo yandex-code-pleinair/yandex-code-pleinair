@@ -5,13 +5,68 @@
     createCanvas(450, 800);
   }
 
-  function draw() {
-    background("white");
+const radius = 15;
 
-    fill(0, 150, 0);
-    stroke(0, 200, 0, 150);
-    strokeWeight(100);
+const rndCache = new Map();
 
-    circle(width / 2, height / 2, 200);
+function draw() {
+  background("white");
+
+  fill("rgba(0, 128, 0, 255)");
+  stroke("rgba(0,0,0,0)");
+  
+  for (let i = 0; i < 10; i++) {
+      createFlow(i++, 20, width / 2, height - radius, 0, 60, 0);
   }
+}
+
+function rndMoveUp() {
+  const max = 8;
+  return parseInt(Math.floor(Math.random() * max));
+}
+
+
+function rndMoveX(coef = 0.5) {
+  const dist = rndMoveUp();
+  return Math.random() > coef ? dist : -dist;
+}
+
+function rndMoveColor(coef = 0) {
+  const max = 8;
+  const color = Math.floor(Math.random() * (max + coef));
+  
+  return color > 255 ? 255 : color;
+}
+
+function createFlow(...props) {
+  let i = props[0];
+
+  let cache = rndCache.get(i);
+  if (!cache) {
+    cache = new Map();
+    rndCache.set(i, cache);
+  }
+
+  flowAndTrunk(cache, ...props);
+}
+
+function flowAndTrunk(cache, indexFlow, count, x, y, r, g, b) {
+  fill(`rgba(${r}, ${g}, ${b}, 255)`);
+  circle(x, y, radius);
+
+  if (count < 0) {
+    return;
+  }
+  
+  let nextData = cache.get(count - 1);
+  
+  if (!nextData) {
+    nextData = [x + rndMoveX(indexFlow / 10), y - rndMoveUp(), r + rndMoveColor(5), g + rndMoveColor(5), b + rndMoveColor(1)];
+    cache.set(count - 1, nextData);
+  }
+  
+  flowAndTrunk(cache, indexFlow, count - 1, ...nextData)
+}
+
+
 </script>
